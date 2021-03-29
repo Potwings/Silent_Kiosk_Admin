@@ -39,8 +39,8 @@
 	</select>
 
 	<insert id="insert">
-		insert into tbl_notice (title,content,writer,category) values(#{title},
-		#{content}, #{writer}, #{category})
+		insert into tbl_notice (title,content,writer,category) 
+		values(#{title}, #{content}, #{writer}, #{category})
 	</insert>
 
 	<delete id="delete">

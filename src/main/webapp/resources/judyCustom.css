@@ -20,3 +20,18 @@ box-shadow: 25px 21px 46px -30px rgba(0,0,0,0.57);
 	width: 100px;
 	margin-bottom: 10px;
 }
+
+.inputbox{
+	height:50vh;
+}
+
+.titlebox{
+	float:left;
+	width: 25vw;
+	margin-right: 20px;
+}
+
+.writerbox{
+	float:left;
+	width: 15vw;
+}

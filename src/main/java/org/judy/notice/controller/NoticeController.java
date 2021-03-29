@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 @Controller
-@RequestMapping("/notice")
+@RequestMapping("/admin/notice")
 @Log4j
 @RequiredArgsConstructor
 public class NoticeController {
@@ -41,18 +41,27 @@ public class NoticeController {
 	}
 
 	@GetMapping("/read")
-	public String getOne(@ModelAttribute("nno") Integer nno, PageDTO pageDTO) {
+	public void getOne(@ModelAttribute("nno") Integer nno, PageDTO pageDTO, Model model) {
 		
+		model.addAttribute("notice", service.getOne(nno));		
+	}
+	
+	@GetMapping("/register")
+	public void getInsert(PageDTO pageDTO) {
 		
-		return "/notice/read";			
 	}
 	
 	@PostMapping("/register")
-	public void postInsert(@RequestBody NoticeDTO dto) {
+	public ResponseEntity<String> postInsert(@RequestBody NoticeDTO dto) {
 
 		log.info("insert.................");
+		log.info("------------------");
+		log.info(dto);
+		log.info("------------------");
 
 		service.insert(dto);
+		
+		return new ResponseEntity<String>("success", HttpStatus.OK); 
 
 	}
 
@@ -61,11 +70,15 @@ public class NoticeController {
 
 	}
 
-	@PostMapping()
+	@PostMapping("/delete")
 	@ResponseBody
-	public ResponseEntity<String> delete(@PathVariable("nno") Integer nno) {
+	public ResponseEntity<String> delete(Integer nno) {
 
 		log.info("delete................");
+		
+		log.info("------------------");
+		log.info(nno);
+		log.info("------------------");
 
 		service.delete(nno);
 
