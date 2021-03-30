@@ -1,6 +1,6 @@
 package org.judy.notice.dto;
 
-import java.util.Date;
+import java.sql.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

@@ -21,10 +21,10 @@ var service = (function() {
 	
 	function upload(formdata){
 	
-		return fetch("/upload/",{
+		return fetch("/admin/common/notice/upload",{
 				method : 'post',
 				body : formdata
-		}).then(res => res.text())
+		}).then(res => res.json())
 	}
 
         return {deleteNotice:deleteNotice, register:register, upload:upload}

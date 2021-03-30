@@ -25,11 +25,11 @@
 									<option value="tc"${pageDTO.type == 'tc'?"selected" : ""}>제목 + 내용</option>
 								</select> 
 								</div>
-								<input name="skeyword" class="form-control" type="text" value="${pageDTO.keyword}" placeholder="검색어를 입력하세요">
+								<input name="skeyword" type="text" value="${pageDTO.keyword}" placeholder="검색어를 입력하세요">
 								<button class="searchBtn"><i class="material-icons">search</i></button>
 
 							<div class="selectPerSheet">
-								<select class="custom-select">
+								<select class="custom-select perSheet-select">
 									<option value="10" ${pageDTO.perSheet == 10? "selected" : ""}>10개씩</option>
 									<option value="20" ${pageDTO.perSheet == 20? "selected" : ""}>20개씩</option>
 									<option value="30" ${pageDTO.perSheet == 30? "selected" : ""}>30개씩</option>
@@ -47,7 +47,7 @@
 								</thead>
 								<tbody class="tList">
 								<c:forEach items="${list}" var="notice" >
-								<tr>
+								<tr data-nno="${notice.nno }">
 								<td>${notice.nno }</td>
 								<td>${notice.title }</td>
 								<td>${notice.content }</td>
@@ -59,6 +59,9 @@
 								</tbody>
 							</table>
 						</div>
+					<div class="btnContainer">
+						<button class="btn btn-primary btn-round registerBtn">등록하기</button>
+					</div>
 
 						<div>
 							<ul class="pagination justify-content-center">
@@ -86,7 +89,7 @@
 </div>
 
 
-<form action="/notice/list" class="actionForm">
+<form action="/admin/notice/list" class="actionForm">
 	<input type="hidden" name="page" value="${pageDTO.page }">
 	<input type="hidden" name="perSheet" value="${pageDTO.perSheet }"> 
 	<input type="hidden" name="type" value="${pageDTO.type }">
@@ -97,17 +100,8 @@
  const actionForm = document.querySelector(".actionForm")
 
  const ul =  document.querySelector(".tList")
-
- function moveRead(param){
-	 
-	 actionForm.innerHTML += "<input type='hidden' name='nno' value='"+ param +"'>"
-
-	 actionForm.setAttribute("action","/notice/read")
-	 
-	 actionForm.submit()	 
- }
   
-  const pUl = document.querySelector(".pagination")
+ const pUl = document.querySelector(".pagination")
 
 pUl.addEventListener("click",function(e){
 	  
@@ -132,13 +126,15 @@ pUl.addEventListener("click",function(e){
   
   
   
-const sPerSheet = document.querySelector(".custom-select")
+const sPerSheet = document.querySelector(".perSheet-select")
   
 sPerSheet.addEventListener("change", function(e){
 	  
   const idx = sPerSheet.selectedIndex
 		
   const perSheet = sPerSheet[idx].value
+  
+  console.log(perSheet)
 		
   actionForm.querySelector("input[name='perSheet']").value = perSheet
 	  
@@ -189,9 +185,31 @@ document.querySelector(".searchBtn").addEventListener("click", function(e){
 	
 	actionForm.submit()
 	
-	
-	
 }, false)
+
+
+document.querySelector(".tList").addEventListener("click", function(e){
+	
+	const nno = e.target.parentNode.getAttribute("data-nno")
+	
+	console.log(nno)
+	
+	actionForm.innerHTML += "<input type='hidden' name='nno' value='"+ nno +"'>"
+
+	actionForm.setAttribute("action","/admin/notice/read")
+	 
+	actionForm.submit()
+	 
+}, false)
+
+document.querySelector(".registerBtn").addEventListener("click", function(e){
+	
+	actionForm.setAttribute("action","/admin/notice/register")
+	
+	actionForm.submit()
+	
+	
+},false)
   
 </script>
 

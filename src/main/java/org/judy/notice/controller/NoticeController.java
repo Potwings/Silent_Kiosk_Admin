@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 @Controller
-@RequestMapping("/admin/notice")
+@RequestMapping("/notice")
 @Log4j
 @RequiredArgsConstructor
 public class NoticeController {

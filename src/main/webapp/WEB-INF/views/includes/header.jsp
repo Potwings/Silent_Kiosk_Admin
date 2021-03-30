@@ -15,21 +15,21 @@ The above copyright notice and this permission notice shall be included in all c
 
 <head>
   <meta charset="utf-8" />
-  <link rel="apple-touch-icon" sizes="76x76" href="/resources/assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="/resources/assets/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/admin/resources/assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="/admin/resources/assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
     Material Dashboard by Creative Tim
   </title>
-  <link href="/resources/judyCustom.css" rel="stylesheet" />
+  <link href="/admin/resources/judyCustom.css" rel="stylesheet" />
   <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <!-- CSS Files -->
-  <link href="/resources/assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
+  <link href="/admin/resources/assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="/resources/assets/demo/demo.css" rel="stylesheet" />
+  <link href="/admin/resources/assets/demo/demo.css" rel="stylesheet" />
 </head>
 
 <body class="">
@@ -40,7 +40,7 @@ The above copyright notice and this permission notice shall be included in all c
 
         Tip 2: you can also add an image using data-image tag
     -->
-      <div class="logo"><a href="http://www.creative-tim.com" class="simple-text logo-normal">
+      <div class="logo"><a href="/admin/notice/list" class="simple-text logo-normal">
           Creative Tim
         </a></div>
       <div class="sidebar-wrapper">
