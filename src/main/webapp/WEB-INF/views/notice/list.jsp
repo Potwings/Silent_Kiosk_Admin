@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="../includes/header.jsp"%>
 
@@ -14,28 +14,37 @@
 
 					</div>
 					<div class="card-body">
-						<div class="table-responsive">
-							
-							<div>
-							<div class="searchBar">
-								<select class="custom-select sType">
+						<div class="listTop">
+
+							<div class="selectType">
+								<select class="selectTypeVal custom-select sType">
 									<option value="t" ${pageDTO.type == 't'?"selected" : ""} >제목</option>
 									<option value="c"${pageDTO.type == 'c'?"selected" : ""} >내용</option>
 									<option value="y"${pageDTO.type == 'y'?"selected" : ""}>카테고리</option>
-									<option value="tc"${pageDTO.type == 'tc'?"selected" : ""}>제목 + 내용</option>
-								</select> 
-								</div>
-								<input name="skeyword" type="text" value="${pageDTO.keyword}" placeholder="검색어를 입력하세요">
-								<button class="searchBtn"><i class="material-icons">search</i></button>
-
-							<div class="selectPerSheet">
-								<select class="custom-select perSheet-select">
-									<option value="10" ${pageDTO.perSheet == 10? "selected" : ""}>10개씩</option>
-									<option value="20" ${pageDTO.perSheet == 20? "selected" : ""}>20개씩</option>
-									<option value="30" ${pageDTO.perSheet == 30? "selected" : ""}>30개씩</option>
+									<option value="tc"${pageDTO.type == 'tc'?"selected" : ""}>제목/내용</option>
 								</select>
 							</div>
+
+							<div class="searchList input-group no-border">
+								<input name="skeyword" 
+								type="text" value="${pageDTO.keyword}" class="searchValue form-control" placeholder="Search...">
+								<button type="submit" class="searchBtn btn btn-white btn-round btn-just-icon">
+									<i class="material-icons">search</i>
+									<div class="ripple-container"></div>
+								</button>
 							</div>
+
+							<div class="selectPerSheet">
+								<select class="selectPerSheet custom-select">
+									<option ${10 == pageDTO.perSheet ? "selected" : "" } value="10">10개씩</option>
+									<option ${20 == pageDTO.perSheet ? "selected" : "" } value="20">20개씩</option>
+									<option ${30 == pageDTO.perSheet ? "selected" : "" } value="30">30개씩</option>
+								</select>
+							</div>
+						</div>
+					
+					
+						<div class="table-responsive">
 							<table class="table">
 								<thead class=" text-primary">
 									<th>Nno</th>
@@ -126,7 +135,7 @@ pUl.addEventListener("click",function(e){
   
   
   
-const sPerSheet = document.querySelector(".perSheet-select")
+const sPerSheet = document.querySelector(".selectPerSheet")
   
 sPerSheet.addEventListener("change", function(e){
 	  

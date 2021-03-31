@@ -3,7 +3,9 @@ package org.judy.common.config;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration.Dynamic;
 
+import org.judy.manager.config.ManagerConfig;
 import org.judy.notice.config.NoticeConfig;
+import org.judy.store.config.StoreConfig;
 import org.judy.time.config.TimeConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -12,7 +14,7 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		// TODO Auto-generated method stub
-		return new Class[] { CommonConfig.class, TimeConfig.class, NoticeConfig.class };
+		return new Class[] { CommonConfig.class, TimeConfig.class, NoticeConfig.class, ManagerConfig.class, StoreConfig.class };
 	}
 
 	@Override

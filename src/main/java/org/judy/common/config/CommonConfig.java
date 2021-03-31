@@ -5,14 +5,16 @@ import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import lombok.extern.log4j.Log4j;
 
-
+@ComponentScan(basePackages = {"org.judy.common.aop"})
 @Configuration
 @Log4j
 public class CommonConfig {
@@ -44,6 +46,11 @@ public class CommonConfig {
 		sessionFactory.setDataSource(dataSource());
 		
 		return sessionFactory.getObject();
+	}
+	
+	@Bean
+	public DataSourceTransactionManager txManager() {
+		return new DataSourceTransactionManager(dataSource());
 	}
 
 }

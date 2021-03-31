@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="../includes/header.jsp"%>
 
@@ -43,11 +43,14 @@
                         </div>
                       </div>
                      </div>
-                      <div>
-                      <input style="height:10vh;" type="file" multiple="multiple" name="files">
-                      <button class="uploadBtn">upload</button>
-                       <ul class="fileUl">
-                       </ul>
+                     <div class="row">
+                      	<div class="col-md-12">
+                      		<input style="height:10vh;" type="file" multiple="multiple" name="files">
+                      	</div>
+                     </div>
+                     <div class="row">
+                     <ul class="fileUl">
+                     </ul>
                       </div>
                        <div class="btnContainer">
 						<button class="btn btn-primary btn-round registerBtn">등록</button>
@@ -127,7 +130,9 @@
 
 	}, false)
 	
-
+	
+	const arr = []
+	
 	document.querySelector(".modalRegisterBtn").addEventListener("click", function(e) {
 		
 		const title = document.querySelector("input[name='title']").value
@@ -138,7 +143,7 @@
 		
 		const content = document.querySelector("textarea[name='content']").value
 		
-		const obj = {title:title, category:category, writer:writer, content:content}
+		const obj = {title:title, category:category, writer:writer, content:content, list:arr}
 		
 		service.register(obj).then(result => document.querySelector(".checkModalBody").innerHTML += "<p>"+result+"<p>");
 		
@@ -157,10 +162,9 @@
 	},false)
 	
 	
-	
 	const fileUl = document.querySelector(".fileUl")
 	
-	document.querySelector(".uploadBtn").addEventListener("click", function(e){
+	document.querySelector("input[name='files']").addEventListener("change", function(e){
 		
 		e.preventDefault()
 		
@@ -181,13 +185,17 @@
 			
 			var file = jsonObj[i];
 			
+			arr.push(file)
+			
+			console.log("arr: "  + arr)
+			
 			if(!file.image){
 				
 					console.log(file.link)			
 					fileUl.innerHTML += "<li><a href='/admin/common/notice/download?link="+file.link+"'><i class='fas fa-file'></i></a>"+file.fileName+"<button onclick='delTempImg()'>삭제</button></li>" 
 			
 			}else{
-			fileUl.innerHTML += "<li>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick=''>삭제</button></li>"
+			fileUl.innerHTML += "<li>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='delTempImg()'>삭제</button></li>"
 
 			}	
 		}})
@@ -205,6 +213,8 @@
 	function delTempImg(){
 		
 		e.preventDefault();
+		
+		
 	}
 	
 </script>

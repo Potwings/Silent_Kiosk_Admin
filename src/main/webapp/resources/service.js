@@ -13,7 +13,7 @@ var service = (function() {
 	
 		return fetch("/admin/notice/register",{
 				method : 'post',
-				headers : {'Content-Type' : 'application/json'},
+				headers : {'Content-Type' : 'application/json; charset=UTF-8'},
 				body : JSON.stringify(obj)
 		}).then(res => res.text())
 	

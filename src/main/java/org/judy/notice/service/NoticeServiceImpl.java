@@ -5,8 +5,10 @@ import java.util.stream.Collectors;
 
 import org.judy.common.util.PageDTO;
 import org.judy.notice.dto.NoticeDTO;
+import org.judy.notice.mapper.NoticeFileMapper;
 import org.judy.notice.mapper.NoticeMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -17,6 +19,8 @@ import lombok.extern.log4j.Log4j;
 public class NoticeServiceImpl implements NoticeService {
 
 	private final NoticeMapper mapper;
+	
+	private final NoticeFileMapper fileMapper;
 	
 	@Override
 	public List<NoticeDTO> getList(PageDTO pageDTO) {
@@ -34,9 +38,17 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
+	@Transactional
 	public void insert(NoticeDTO dto) {
 
 		log.info("insert...............");
+
+		dto.getList().forEach(file ->
+		{
+			file.setNno(dto.getNno());
+			fileMapper.insertFile(file);
+			
+		});
 		
 		mapper.insert(toDomain(dto));
 	}

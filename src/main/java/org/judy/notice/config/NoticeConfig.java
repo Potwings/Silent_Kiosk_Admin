@@ -11,7 +11,6 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @MapperScan(basePackages = "org.judy.notice.mapper")
 @ComponentScan(basePackages = "org.judy.notice.service")
-@ComponentScan(basePackages = "org.judy.common.aop")
 @EnableAspectJAutoProxy
 public class NoticeConfig {
 

@@ -1,6 +1,7 @@
 package org.judy.notice.mapper;
 
 import org.judy.common.config.CommonConfig;
+import org.judy.common.util.NoticeFileDTO;
 import org.judy.common.util.PageDTO;
 import org.judy.notice.config.NoticeConfig;
 import org.judy.notice.domain.Notice;
@@ -19,6 +20,8 @@ public class NoticeMapperTests {
 	
 	@Autowired
 	NoticeMapper mapper;
+	@Autowired
+	NoticeFileMapper fileMapper;
 	
 	@Test
 	public void getListTest() {
@@ -62,5 +65,18 @@ public class NoticeMapperTests {
 	public void deleteTest() {
 		
 		mapper.delete(505);
+	}
+	
+	@Test
+	public void insertFileTest() {
+		
+		NoticeFileDTO dto = new NoticeFileDTO();
+		dto.setFileName("t");
+		dto.setNno(516);
+		dto.setUploadPath("C");
+		dto.setUuid("sss");
+		dto.setImage(true);
+		
+		fileMapper.insertFile(dto);
 	}
 }
