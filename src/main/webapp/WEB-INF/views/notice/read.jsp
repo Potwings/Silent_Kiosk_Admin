@@ -14,11 +14,21 @@
 						<h5><c:out value=" ${notice.regdate }"></c:out></h5>
 					</div>
 					<div class="contentBox card-body noticeContent">
-						<h4><c:out value="${notice.content }"></c:out> </h4>
-		
+				<div style="text-align: center;">
+				<c:forEach items="${files }" var="file">
+				<c:if test="${ file.image}">
+				<img style="width:30vw;" src='/admin/common/notice/view?link=${file.link }'>
+				</c:if>
+				<c:if test="${!file.image}">
+				<li><a href='/admin/common/notice/download?link=${file.link}'><i class="fas fa-file"></i></a>${ file.fileName}</li> 
+				</c:if>
+				</c:forEach>
+				</div>
+						<div style="white-space:pre;"><h4><c:out value="${notice.content }"></c:out></h4></div> 
 					</div>
 					<div class="btnContainer">
 					<button class="btn btn-primary btn-round deleteBtn" >삭제</button>
+					<button class="btn btn-primary btn-round modifyBtn" >수정</button>
 					</div>	
 				</div>
 			</div>
@@ -104,7 +114,14 @@ document.querySelector(".checkBtn").addEventListener("click", function(){
 		
 	},false)
 	
-
+document.querySelector(".modifyBtn").addEventListener("click", function(e){
+	
+	actionForm.innerHTML += "<input type='hidden' name='nno' value='${notice.nno}'>"
+	
+	actionForm.setAttribute("action", "/admin/notice/modify")
+	
+	actionForm.submit()
+}, false)
 
 
 </script>

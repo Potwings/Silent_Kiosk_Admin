@@ -44,6 +44,7 @@ public class NoticeMapperTests {
 				.title("테스트제목")
 				.content("테스트 내용")
 				.writer("user00")
+				.category("안내")
 				.build();
 				
 		
@@ -77,6 +78,35 @@ public class NoticeMapperTests {
 		dto.setUuid("sss");
 		dto.setImage(true);
 		
-		fileMapper.insertFile(dto);
+		Notice vo = Notice.builder()
+				.title("테스트제목")
+				.content("테스트 내용")
+				.writer("user00")
+				.category("안내")
+				.build();
+		
+		log.info(mapper.insertSelectKey(vo));
 	}
+	
+	@Test
+	public void getFileTest() {
+		
+		log.info(fileMapper.getFile(536));
+	}
+	
+	@Test
+	public void updateTest() {
+		
+		Notice vo = Notice.builder()
+				.nno(530)
+				.title("테스트제목")
+				.content("테스트 내용")
+				.writer("user00")
+				.category("안내")
+				.build();
+
+		mapper.update(vo);
+		
+	}
+	
 }

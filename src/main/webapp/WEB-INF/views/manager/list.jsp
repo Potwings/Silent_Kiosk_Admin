@@ -89,8 +89,6 @@
 
 								<!-- pagination -->
 								<div>
-
-
 									<ul class="pagination justify-content-center">
 										<c:if test="${pageMaker.prev}">
 											<li class="page-item"><a class="page-link"

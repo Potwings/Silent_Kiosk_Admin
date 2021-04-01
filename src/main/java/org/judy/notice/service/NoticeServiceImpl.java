@@ -3,7 +3,9 @@ package org.judy.notice.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.judy.common.util.NoticeFileDTO;
 import org.judy.common.util.PageDTO;
+import org.judy.notice.domain.Notice;
 import org.judy.notice.dto.NoticeDTO;
 import org.judy.notice.mapper.NoticeFileMapper;
 import org.judy.notice.mapper.NoticeMapper;
@@ -43,14 +45,20 @@ public class NoticeServiceImpl implements NoticeService {
 
 		log.info("insert...............");
 
+		Notice vo = toDomain(dto);
+		
+		mapper.insert(vo);
+		
+		log.info("vo :"+ vo);
+		
+		log.info("vo.getNno: " + vo.getNno());
+		
 		dto.getList().forEach(file ->
 		{
-			file.setNno(dto.getNno());
+			file.setNno(vo.getNno());
 			fileMapper.insertFile(file);
-			
 		});
 		
-		mapper.insert(toDomain(dto));
 	}
 
 	@Override
@@ -63,6 +71,20 @@ public class NoticeServiceImpl implements NoticeService {
 	public void delete(Integer nno) {
 		
 		mapper.delete(nno);
+		
+	}
+
+	@Override
+	public List<NoticeFileDTO> getFile(Integer nno) {
+		
+		return fileMapper.getFile(nno);
+	
+	}
+
+	@Override
+	public void update(NoticeDTO dto) {
+
+		mapper.update(toDomain(dto));
 		
 	}
 

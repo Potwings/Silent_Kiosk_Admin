@@ -52,7 +52,7 @@ public class NoticeServiceTests {
 		fileDto.setFileName("t");
 		fileDto.setNno(516);
 		fileDto.setUploadPath("C");
-		fileDto.setUuid("adsdfsdfs");
+		fileDto.setUuid("adsd234234fsdfs");
 		fileDto.setImage(true);
 		
 		list.add(fileDto);
@@ -82,4 +82,22 @@ public class NoticeServiceTests {
 		service.delete(376);
 	}
 	
+	@Test
+	public void testGetFile() {
+		log.info(service.getFile(516));
+	}
+	
+	@Test
+	public void testUpdate() {
+		
+		NoticeDTO dto = new NoticeDTO();
+		
+		dto.setTitle("test10");
+		dto.setContent("test content");
+		dto.setWriter("user00");
+		dto.setCategory("안내");
+
+		service.update(dto);
+		
+	}
 }

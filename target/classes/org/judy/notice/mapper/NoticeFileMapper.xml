@@ -7,4 +7,8 @@
 		insert into tbl_notice_file (uuid, uploadpath, filename, nno, image)
         values (#{uuid}, #{uploadPath}, #{fileName}, #{nno}, #{image})
 	</insert>
+	
+	<select id="getFile" resultType="org.judy.common.util.NoticeFileDTO">
+		select * from tbl_notice_file where nno = #{nno}
+	</select>
 </mapper>

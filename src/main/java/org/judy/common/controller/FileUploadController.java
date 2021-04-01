@@ -39,6 +39,9 @@ public class FileUploadController {
    @ResponseBody
    public ResponseEntity<byte[]> getView(String link) {
 
+	   log.info("view.....................");
+	   log.info("Link:" + link);
+	   
       String path = "C:\\upload\\temp\\admin\\notice";
 
       ResponseEntity<byte[]> result = null;
@@ -59,12 +62,13 @@ public class FileUploadController {
       return result;
    }
    
+   
+   
    @GetMapping("/manager/view")
    public ResponseEntity<byte[]> view(String link) {
       
       String path = "C:\\upload\\temp\\admin\\manager";
       ResponseEntity<byte[]> result = null;
-         
       
       try {
          
@@ -92,7 +96,6 @@ public class FileUploadController {
    @PostMapping(value =  "/manager/upload", produces = {MediaType.APPLICATION_JSON_VALUE})
    public ResponseEntity<List<ManagerFileDTO>> postUpload(MultipartFile[] files){
    
-      
       String path = "C:\\upload\\temp\\admin\\manager";
       
       List<ManagerFileDTO> fileList = new ArrayList<>();
@@ -137,8 +140,6 @@ public class FileUploadController {
             
              fileList.add(fileDTO);
             
-         
-            
          } catch (Exception e) {
             e.printStackTrace();
          }
@@ -148,6 +149,8 @@ public class FileUploadController {
    return new ResponseEntity<List<ManagerFileDTO>>(fileList, HttpStatus.OK);
    
    }
+   
+   
 
    @PostMapping("/notice/upload")
    public ResponseEntity<List<NoticeFileDTO>> uploadPost(MultipartFile[] uploadFile) {
@@ -177,7 +180,7 @@ public class FileUploadController {
 
          String fileName = multipartFile.getOriginalFilename();
 
-         File saveFile = new File(folderPath, uuid.toString() + "_" + fileName);
+         File saveFile = new File(uploadPath, uuid.toString() + "_" + fileName);
 
          boolean isImage = multipartFile.getContentType().startsWith("image");
 
@@ -185,7 +188,6 @@ public class FileUploadController {
 
             if (isImage) {
                File sFile = new File(uploadPath, "s_" + uuid.toString() + "_" + fileName);
-
                FileOutputStream fos = new FileOutputStream(sFile);
                Thumbnailator.createThumbnail(multipartFile.getInputStream(), fos, 100, 100);
 
@@ -203,6 +205,8 @@ public class FileUploadController {
 
       return new ResponseEntity<>(fileList, HttpStatus.OK);
    }
+   
+   
 
    @GetMapping(value = "/notice/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
    @ResponseBody
@@ -236,6 +240,8 @@ public class FileUploadController {
 
       return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
    }
+   
+   
 
    private String getFolder() {
 
@@ -249,11 +255,11 @@ public class FileUploadController {
 
    }
    
+   
 
    private File encoding(String link, String path) {
-
       
-      File viewFile = null;
+	   File viewFile = null;
       
       try {
          String str = URLDecoder.decode(link, "UTF-8");

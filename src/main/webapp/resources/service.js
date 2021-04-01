@@ -26,7 +26,17 @@ var service = (function() {
 				body : formdata
 		}).then(res => res.json())
 	}
+	
+	function modify(obj){
+		
+		return fetch("/admin/notice/modify",{
+				method : 'post',
+				headers : {'Content-Type' : 'application/json'},
+				body : JSON.stringify(obj)
+		}).then(res => res.text())
+	}
+	
 
-        return {deleteNotice:deleteNotice, register:register, upload:upload}
+        return {deleteNotice:deleteNotice, register:register, upload:upload, modify:modify}
 
     }())
