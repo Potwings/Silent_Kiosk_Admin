@@ -36,7 +36,16 @@ var service = (function() {
 		}).then(res => res.text())
 	}
 	
+	function fileDelete(param){
+	
+		return fetch("/admin/common/notice/delete",{
+			method : 'post',
+			headers : {'Content-Type' : 'application/json'},
+			body : JSON.stringify(param)
+		})
+	}
+	
 
-        return {deleteNotice:deleteNotice, register:register, upload:upload, modify:modify}
+        return {deleteNotice:deleteNotice, register:register, upload:upload, modify:modify, fileDelete:fileDelete}
 
     }())

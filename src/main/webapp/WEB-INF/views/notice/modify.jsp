@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="../includes/header.jsp"%>
-
 <div class="content">
         <div class="container-fluid">
           <div class="row">
@@ -50,6 +49,15 @@
                      </div>
                      <div class="row">
                      <ul class="fileUl">
+                     <c:forEach items="${files }" var="file">
+                     <%-- const obj = {fileName:${file.fileName}, uuid:${file.uuid}, uploadPath:${file.uploadPath} ,image:${file.image}} --%> 
+                     	<c:if test="${!file.image}">
+							<li><i class='fas fa-file'></i>${file.fileName}<button onclick='function(event){event.preventDefault(); delTempImg(" + obj + ")}'>삭제</button></li>
+						</c:if>
+						<c:if test="${file.image }">
+			            	<li><img src='/admin/common/notice/view?link=${file.thumbLink}'/><button onclick='function(event){event.preventDefault(); delTempImg(event,${file})}'>삭제</button></li>
+						</c:if>
+                     </c:forEach>
                      </ul>
                       </div>
                        <div class="btnContainer">
@@ -190,10 +198,10 @@
 			if(!file.image){
 				
 					console.log(file.link)			
-					fileUl.innerHTML += "<li><a href='/admin/common/notice/download?link="+file.link+"'><i class='fas fa-file'></i></a>"+file.fileName+"<button onclick='delTempImg()'>삭제</button></li>" 
+					fileUl.innerHTML += "<li><a href='/admin/common/notice/download?link="+file.link+"'><i class='fas fa-file'></i></a>"+file.fileName+"<button onclick='{event.preventDefault(); delTempImg()}'>삭제</button></li>" 
 			
 			}else{
-			fileUl.innerHTML += "<li>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='delTempImg()'>삭제</button></li>"
+			fileUl.innerHTML += "<li>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='{event.preventDefault(); delTempImg()}'>삭제</button></li>"
 
 			}	
 		}})
@@ -208,11 +216,14 @@
 		
 	},false)
 	
-	function delTempImg(){
+	function delTempImg(param){
 		
-		e.preventDefault();
+		event.preventDefault()
 		
+		console.log(param)
 		
+		service.fileDelete(param).then(res => console.log(res))
+
 	}
 	
 </script>

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +35,43 @@ import net.coobird.thumbnailator.Thumbnailator;
 @RequestMapping("/common")
 @Log4j
 public class FileUploadController {
+	
+	@PostMapping("/notice/delete")
+	public ResponseEntity<String> postDelete(@RequestBody NoticeFileDTO file){
+		
+		log.info("link:"+file);
+		
+		String path = "C:\\upload\\temp\\admin\\notice";
+		
+		String fileName = file.getFileName();
+		
+		String filePath = file.getUploadPath();
+		
+		String uuid = file.getUuid();
+		
+		String getFile = filePath + File.separator + uuid + "_" + fileName;
+		
+		log.info(getFile);
+		
+		File targetFile = new File(path, getFile);
+		
+		log.info(targetFile);
+		
+		
+		targetFile.delete();
+		
+		if(file.isImage()) {
+			
+			String thumbImg = filePath + File.separator + "s_" + uuid + "_" + fileName;
+			
+			File targetThumbFile = new File(path, thumbImg);
+			
+			targetThumbFile.delete();
+			
+		}
+		
+		return new ResponseEntity<String> ("success",HttpStatus.OK);
+	}
 
    @GetMapping("/notice/view")
    @ResponseBody

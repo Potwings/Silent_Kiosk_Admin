@@ -66,6 +66,7 @@ public class NoticeController {
 	@GetMapping("/modify")
 	public void getModify(Integer nno, Model model) {
 
+		model.addAttribute("files", service.getFile(nno));
 		model.addAttribute("notice", service.getOne(nno));
 		
 	}

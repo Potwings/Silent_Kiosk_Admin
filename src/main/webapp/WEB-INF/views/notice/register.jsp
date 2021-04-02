@@ -192,10 +192,10 @@
 			if(!file.image){
 				
 					console.log(file.link)			
-					fileUl.innerHTML += "<li><a href='/admin/common/notice/download?link="+file.link+"'><i class='fas fa-file'></i></a>"+file.fileName+"<button onclick='delTempImg()'>삭제</button></li>" 
+					fileUl.innerHTML += "<li><a href='/admin/common/notice/download?link="+file.link+"'><i class='fas fa-file'></i></a>"+file.fileName+"<button onclick='delTempImg("+JSON.stringify(file)+")'>삭제</button></li>" 
 			
 			}else{
-			fileUl.innerHTML += "<li>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='delTempImg()'>삭제</button></li>"
+			fileUl.innerHTML += "<li>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='delTempImg("+JSON.stringify(file)+")'>삭제</button></li>"
 
 			}	
 		}})
@@ -210,11 +210,12 @@
 		
 	},false)
 	
-	function delTempImg(){
+	function delTempImg(param){
 		
-		e.preventDefault();
+		console.log(param)
 		
-		
+		service.fileDelete(param).then(res => console.log(res))
+
 	}
 	
 </script>
