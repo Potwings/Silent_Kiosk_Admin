@@ -84,8 +84,13 @@ public class FileUploadController {
 
       ResponseEntity<byte[]> result = null;
 
+      
+      
+      
       try {
          File targetFile = encoding(link,path);
+         
+         
          
          HttpHeaders header = new HttpHeaders();
 
@@ -289,7 +294,7 @@ public class FileUploadController {
 
       String str = sdf.format(date);
 
-      return str.replace("-", File.separator);
+      return str.replace("-", "/");
 
    }
    

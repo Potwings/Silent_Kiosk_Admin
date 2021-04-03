@@ -50,13 +50,14 @@
                      <div class="row">
                      <ul class="fileUl">
                      <c:forEach items="${files }" var="file">
-                     <%-- const obj = {fileName:${file.fileName}, uuid:${file.uuid}, uploadPath:${file.uploadPath} ,image:${file.image}} --%> 
+                     ${file}
+                     ${file.uploadPath}
                      	<c:if test="${!file.image}">
-							<li><i class='fas fa-file'></i>${file.fileName}<button onclick='function(event){event.preventDefault(); delTempImg(" + obj + ")}'>삭제</button></li>
+							<li id="li${file.uuid }"><i class='fas fa-file'></i>${file.fileName}<button onclick="delTempImg(event, {'uploadPath':'${file.uploadPath}', 'uuid':'${file.uuid }', 'fileName':'${file.fileName}', 'image':'${file.image}', 'nno':'${file.nno }'})">삭제</button></li>
 						</c:if>
 						<c:if test="${file.image }">
-			            	<li><img src='/admin/common/notice/view?link=${file.thumbLink}'/><button onclick='function(event){event.preventDefault(); delTempImg(event,${file})}'>삭제</button></li>
-						</c:if>
+			            	<li id="li${file.uuid }"><img src='/admin/common/notice/view?link=${file.thumbLink}'/><button onclick="delTempImg(event, {'uploadPath':'${file.uploadPath}', 'uuid':'${file.uuid }', 'fileName':'${file.fileName}', 'image':'${file.image}', 'nno':'${file.nno }'})">삭제</button></li>
+			            	</c:if>
                      </c:forEach>
                      </ul>
                       </div>
@@ -139,6 +140,8 @@
 	}, false)
 	
 	
+
+	
 	const arr = []
 	
 	document.querySelector(".modalModifyBtn").addEventListener("click", function(e) {
@@ -198,10 +201,10 @@
 			if(!file.image){
 				
 					console.log(file.link)			
-					fileUl.innerHTML += "<li><a href='/admin/common/notice/download?link="+file.link+"'><i class='fas fa-file'></i></a>"+file.fileName+"<button onclick='{event.preventDefault(); delTempImg()}'>삭제</button></li>" 
+					fileUl.innerHTML += "<li id='li"+file.uuid+"'><a href='/admin/common/notice/download?link="+file.link+"'><i class='fas fa-file'></i></a>"+file.fileName+"<button onclick='delTempImg(event, JSON.stringify("+file+"))'>삭제</button></li>" 
 			
 			}else{
-			fileUl.innerHTML += "<li>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='{event.preventDefault(); delTempImg()}'>삭제</button></li>"
+			fileUl.innerHTML += "<li id='li"+file.uuid+"'>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='delTempImg(event, "+JSON.stringify(file)+")'>삭제</button></li>"
 
 			}	
 		}})
@@ -216,15 +219,42 @@
 		
 	},false)
 	
-	function delTempImg(param){
+	
+		function delTempImg(event, param){
 		
+		console.log(event)
+			
 		event.preventDefault()
 		
 		console.log(param)
 		
-		service.fileDelete(param).then(res => console.log(res))
+	 	service.fileDelete(param).then(res => console.log(res))
+	 	
+	 	fileUl.querySelector("#li"+param.uuid).remove();
 
-	}
+	} 
+	
+
+	
+/* 	const fileDelBtn = document.querySelector(".fileDelBtn")
+	
+	fileDelBtn.addEventListener("click", function(e){
+		
+		e.preventDefault();
+		
+		
+		
+	},false) */
+	
+	
+	fileUl.addEventListener("click", function(){
+		
+	
+		
+		
+		
+	},false)
+	
 	
 </script>
 
