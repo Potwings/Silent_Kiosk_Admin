@@ -83,14 +83,9 @@ public class FileUploadController {
       String path = "C:\\upload\\temp\\admin\\notice";
 
       ResponseEntity<byte[]> result = null;
-
-      
-      
       
       try {
          File targetFile = encoding(link,path);
-         
-         
          
          HttpHeaders header = new HttpHeaders();
 

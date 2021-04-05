@@ -53,10 +53,10 @@
                      ${file}
                      ${file.uploadPath}
                      	<c:if test="${!file.image}">
-							<li id="li${file.uuid }"><i class='fas fa-file'></i>${file.fileName}<button onclick="delTempImg(event, {'uploadPath':'${file.uploadPath}', 'uuid':'${file.uuid }', 'fileName':'${file.fileName}', 'image':'${file.image}', 'nno':'${file.nno }'})">삭제</button></li>
+							<li id="li_${file.uuid }"><i class='fas fa-file'></i>${file.fileName}<button onclick="delTempImg(event, {'uploadPath':'${file.uploadPath}', 'uuid':'${file.uuid }', 'fileName':'${file.fileName}', 'image':'${file.image}', 'nno':'${file.nno }'})">삭제</button></li>
 						</c:if>
 						<c:if test="${file.image }">
-			            	<li id="li${file.uuid }"><img src='/admin/common/notice/view?link=${file.thumbLink}'/><button onclick="delTempImg(event, {'uploadPath':'${file.uploadPath}', 'uuid':'${file.uuid }', 'fileName':'${file.fileName}', 'image':'${file.image}', 'nno':'${file.nno }'})">삭제</button></li>
+			            	<li id="li_${file.uuid }"><img src='/admin/common/notice/view?link=${file.thumbLink}'/><button onclick="delTempImg(event, {'uploadPath':'${file.uploadPath}', 'uuid':'${file.uuid }', 'fileName':'${file.fileName}', 'image':'${file.image}', 'nno':'${file.nno }'})">삭제</button></li>
 			            	</c:if>
                      </c:forEach>
                      </ul>
@@ -201,10 +201,10 @@
 			if(!file.image){
 				
 					console.log(file.link)			
-					fileUl.innerHTML += "<li id='li"+file.uuid+"'><a href='/admin/common/notice/download?link="+file.link+"'><i class='fas fa-file'></i></a>"+file.fileName+"<button onclick='delTempImg(event, JSON.stringify("+file+"))'>삭제</button></li>" 
+					fileUl.innerHTML += "<li id='li_"+file.uuid+"'><a href='/admin/common/notice/download?link="+file.link+"'><i class='fas fa-file'></i></a>"+file.fileName+"<button onclick='delTempImg(event, JSON.stringify("+file+"))'>삭제</button></li>" 
 			
 			}else{
-			fileUl.innerHTML += "<li id='li"+file.uuid+"'>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='delTempImg(event, "+JSON.stringify(file)+")'>삭제</button></li>"
+			fileUl.innerHTML += "<li id='li_"+file.uuid+"'>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='delTempImg(event, "+JSON.stringify(file)+")'>삭제</button></li>"
 
 			}	
 		}})
@@ -230,7 +230,7 @@
 		
 	 	service.fileDelete(param).then(res => console.log(res))
 	 	
-	 	fileUl.querySelector("#li"+param.uuid).remove();
+	 	fileUl.querySelector("#li_"+param.uuid).remove();
 
 	} 
 	
