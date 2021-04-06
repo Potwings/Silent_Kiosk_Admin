@@ -1,8 +1,5 @@
 package org.judy.notice.controller;
 
-import java.util.List;
-
-import org.judy.common.util.NoticeFileDTO;
 import org.judy.common.util.PageDTO;
 import org.judy.common.util.PageMaker;
 import org.judy.notice.dto.NoticeDTO;
@@ -43,7 +40,6 @@ public class NoticeController {
 	@GetMapping("/read")
 	public void getOne(@ModelAttribute("nno") Integer nno, PageDTO pageDTO, Model model) {
 		
-		model.addAttribute("files", service.getFile(nno));
 		model.addAttribute("notice", service.getOne(nno));		
 	}
 	
@@ -67,17 +63,9 @@ public class NoticeController {
 	}
 	
 	@GetMapping("/modify")
-	public void getModify(Integer nno, Model model) {
-		
-		List<NoticeFileDTO> targetFiles = service.getFile(nno);
-		
-		log.info("------------------");
-		log.info("------------------");
-		log.info("file: "+targetFiles);
-		log.info("------------------");
-		log.info("------------------");
+	public void getModify(@ModelAttribute("nno")Integer nno, Model model) {
 
-		model.addAttribute("files", targetFiles);
+		model.addAttribute("files", service.getFile(nno));
 		model.addAttribute("notice", service.getOne(nno));
 		
 	}

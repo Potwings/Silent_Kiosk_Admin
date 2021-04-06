@@ -45,7 +45,14 @@ var service = (function() {
 		})
 	}
 	
+	function getFiles(nno){
+	
+		return fetch("/admin/common/notice/getFiles?nno="+nno,{
+			method : 'get'
+		})
+	}
+	
 
-        return {deleteNotice:deleteNotice, register:register, upload:upload, modify:modify, fileDelete:fileDelete}
+        return {deleteNotice:deleteNotice, register:register, upload:upload, modify:modify, fileDelete:fileDelete, getFiles:getFiles}
 
     }())

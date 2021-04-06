@@ -13,6 +13,7 @@ import java.util.UUID;
 
 import org.judy.common.util.ManagerFileDTO;
 import org.judy.common.util.NoticeFileDTO;
+import org.judy.notice.service.NoticeService;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -28,13 +29,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;
 
 @Controller
 @RequestMapping("/common")
 @Log4j
+@RequiredArgsConstructor
 public class FileUploadController {
+	
+	public final NoticeService service;
+	
+	@GetMapping("/notice/getFiles")
+	@ResponseBody
+	public ResponseEntity<List<NoticeFileDTO>> getFiles(Integer nno){
+
+		log.info("nno:........."+nno);
+		
+		return new ResponseEntity<>(service.getFile(nno),HttpStatus.OK);
+		
+	}
 	
 	@PostMapping("/notice/delete")
 	public ResponseEntity<String> postDelete(@RequestBody NoticeFileDTO file){
@@ -83,7 +98,7 @@ public class FileUploadController {
       String path = "C:\\upload\\temp\\admin\\notice";
 
       ResponseEntity<byte[]> result = null;
-      
+
       try {
          File targetFile = encoding(link,path);
          

@@ -14,15 +14,7 @@
 						<h5><c:out value=" ${notice.regdate }"></c:out></h5>
 					</div>
 					<div class="contentBox card-body noticeContent">
-				<div style="text-align: center;">
-				<c:forEach items="${files }" var="file">
-				<c:if test="${ file.image}">
-				<img style="width:30vw;" src='/admin/common/notice/view?link=${file.link }'>
-				</c:if>
-				<c:if test="${!file.image}">
-				<li><a href='/admin/common/notice/download?link=${file.link}'><i class="fas fa-file"></i></a>${ file.fileName}</li> 
-				</c:if>
-				</c:forEach>
+				<div class="fileDiv" style="text-align: center;">
 				</div>
 						<div style="white-space:pre;"><h4><c:out value="${notice.content }"></c:out></h4></div> 
 					</div>
@@ -122,6 +114,23 @@ document.querySelector(".modifyBtn").addEventListener("click", function(e){
 	
 	actionForm.submit()
 }, false)
+
+
+service.getFiles(${nno}).then(res=>res.json()).then(files => {
+
+   let str=""
+
+	for(const file of files){
+		
+	if(file.image){
+		str += "<li id='li"+file.uuid+"'>"+file.fileName+"<img style='width:30vw;' src='/admin/common/notice/view?link="+file.link+"'/></li>"
+	}else{
+		str += "<li id='li"+file.uuid+"'><a href='/admin/common/notice/download?link="+file.link+"'><i class='fas fa-file'></i></a>"+file.fileName+"</li>" 
+	}
+}
+   document.querySelector(".fileDiv").innerHTML += str
+   
+   })
 
 
 </script>

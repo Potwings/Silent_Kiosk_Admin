@@ -11,4 +11,3 @@ public interface NoticeFileMapper {
 	List<NoticeFileDTO> getFile(Integer nno);
 
 }
-

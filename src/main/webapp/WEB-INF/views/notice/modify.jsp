@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="../includes/header.jsp"%>
 <div class="content">
@@ -43,28 +43,18 @@
                       </div>
                      </div>
                      <div class="row">
-                      	<div class="col-md-12">
-                      		<input style="height:10vh;" type="file" multiple="multiple" name="files">
-                      	</div>
+                         <div class="col-md-12">
+                            <input style="height:10vh;" type="file" multiple="multiple" name="files">
+                         </div>
                      </div>
                      <div class="row">
                      <ul class="fileUl">
-                     <c:forEach items="${files }" var="file">
-                     ${file}
-                     ${file.uploadPath}
-                     	<c:if test="${!file.image}">
-							<li id="li_${file.uuid }"><i class='fas fa-file'></i>${file.fileName}<button onclick="delTempImg(event, {'uploadPath':'${file.uploadPath}', 'uuid':'${file.uuid }', 'fileName':'${file.fileName}', 'image':'${file.image}', 'nno':'${file.nno }'})">삭제</button></li>
-						</c:if>
-						<c:if test="${file.image }">
-			            	<li id="li_${file.uuid }"><img src='/admin/common/notice/view?link=${file.thumbLink}'/><button onclick="delTempImg(event, {'uploadPath':'${file.uploadPath}', 'uuid':'${file.uuid }', 'fileName':'${file.fileName}', 'image':'${file.image}', 'nno':'${file.nno }'})">삭제</button></li>
-			            	</c:if>
-                     </c:forEach>
                      </ul>
                       </div>
                        <div class="btnContainer">
-						<button class="btn btn-primary btn-round modifyBtn">수정</button>
-						<button class="btn btn-primary btn-round listBtn">목록으로</button>
-					</div>
+                  <button class="btn btn-primary btn-round modifyBtn">수정</button>
+                  <button class="btn btn-primary btn-round listBtn">목록으로</button>
+               </div>
                   </form>
                 </div>
               </div>
@@ -79,183 +69,213 @@
 
 
 <div class="modal" id="modifyModal" tabindex="-1" role="dialog">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">수정 확인</h5>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<p>수정하시겠습니까?</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary modalModifyBtn">수정</button>
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-			</div>
-		</div>
-	</div>
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">수정 확인</h5>
+            <button type="button" class="close" data-dismiss="modal"
+               aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <p>수정하시겠습니까?</p>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-primary modalModifyBtn">수정</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+         </div>
+      </div>
+   </div>
 </div>
 
 <div class="modal" id="checkModal" tabindex="-1" role="dialog">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">등록 확인</h5>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body checkModalBody">
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary checkBtn">확인</button>
-			</div>
-		</div>
-	</div>
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">등록 확인</h5>
+            <button type="button" class="close" data-dismiss="modal"
+               aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body checkModalBody">
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-primary checkBtn">확인</button>
+         </div>
+      </div>
+   </div>
 </div>
 
 
 <form action="/admin/notice/list" class="actionForm">
-	<input type="hidden" name="page" value="${pageDTO.page }"> 
-	<input type="hidden" name="perSheet" value="${pageDTO.perSheet }"> 
-	<input type="hidden" name="type" value="${pageDTO.type }"> 
-	<input type="hidden" name="keyword" value="${pageDTO.keyword }">
+   <input type="hidden" name="page" value="${pageDTO.page }"> 
+   <input type="hidden" name="perSheet" value="${pageDTO.perSheet }"> 
+   <input type="hidden" name="type" value="${pageDTO.type }"> 
+   <input type="hidden" name="keyword" value="${pageDTO.keyword }">
 </form>
 
 
 <script src="/admin/resources/service.js"></script>
 <script>
-	const actionForm = document.querySelector(".actionForm")
+   const actionForm = document.querySelector(".actionForm")
 
-	document.querySelector(".modifyBtn").addEventListener("click", function(e) {
+   document.querySelector(".modifyBtn").addEventListener("click", function(e) {
 
-	e.preventDefault();
-		
-	 $("#modifyModal").modal("show")
+   e.preventDefault();
+      
+    $("#modifyModal").modal("show")
 
-	}, false)
-	
-	
+   }, false)
+   
+   
 
-	
-	const arr = []
-	
-	document.querySelector(".modalModifyBtn").addEventListener("click", function(e) {
-		
-		const title = document.querySelector("input[name='title']").value
-		
-		const category = document.querySelector("input[name='category']").value
-		
-		const writer = document.querySelector("input[name='writer']").value
-		
-		const content = document.querySelector("textarea[name='content']").value
-		
-		const obj = {nno:${notice.nno}, title:title, category:category, writer:writer, content:content /*, list:arr */}
-		
-		service.modify(obj).then(result => document.querySelector(".checkModalBody").innerHTML += "<h3>"+result+"</h3>")
-		
-		$("#checkModal").modal("show")
-		
-	}, false)
-	
-	
-	
-	document.querySelector(".checkBtn").addEventListener("click", function(e){
-		
-		location.href="/admin/notice/list"
-		
-	},false)
-	
-	
-	const fileUl = document.querySelector(".fileUl")
-	
-	document.querySelector("input[name='files']").addEventListener("change", function(e){
-		
-		e.preventDefault()
-		
-		const formdata = new FormData()
-		
-		const files = document.querySelector("input[name='files']").files
-		
-		for(var i = 0; i < files.length ; i++){
-			
-			formdata.append("uploadFile", files[i])
-			
-		}
-		
-		service.upload(formdata).then(jsonObj => 
-		
-		 { console.log(jsonObj)
-			for(var i = 0 ; i< jsonObj.length; i++){
-			
-			var file = jsonObj[i];
-			
-			arr.push(file)
-			
-			console.log("arr: "  + arr)
-			
-			if(!file.image){
-				
-					console.log(file.link)			
-					fileUl.innerHTML += "<li id='li_"+file.uuid+"'><a href='/admin/common/notice/download?link="+file.link+"'><i class='fas fa-file'></i></a>"+file.fileName+"<button onclick='delTempImg(event, JSON.stringify("+file+"))'>삭제</button></li>" 
-			
-			}else{
-			fileUl.innerHTML += "<li id='li_"+file.uuid+"'>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='delTempImg(event, "+JSON.stringify(file)+")'>삭제</button></li>"
+   
+   const arr = []
+   
+   document.querySelector(".modalModifyBtn").addEventListener("click", function(e) {
+      
+      const title = document.querySelector("input[name='title']").value
+      
+      const category = document.querySelector("input[name='category']").value
+      
+      const writer = document.querySelector("input[name='writer']").value
+      
+      const content = document.querySelector("textarea[name='content']").value
+      
+      const obj = {nno:${notice.nno}, title:title, category:category, writer:writer, content:content /*, list:arr */}
+      
+      service.modify(obj).then(result => document.querySelector(".checkModalBody").innerHTML += "<h3>"+result+"</h3>")
+      
+      $("#checkModal").modal("show")
+      
+   }, false)
+   
+   
+   
+   document.querySelector(".checkBtn").addEventListener("click", function(e){
+      
+      location.href="/admin/notice/list"
+      
+   },false)
+   
+   
+   const fileUl = document.querySelector(".fileUl")
+   
+   document.querySelector("input[name='files']").addEventListener("change", function(e){
+      
+      e.preventDefault()
+      
+      const formdata = new FormData()
+      
+      const files = document.querySelector("input[name='files']").files
+      
+      for(var i = 0; i < files.length ; i++){
+         
+         formdata.append("uploadFile", files[i])
+         
+      }
+      
+      service.upload(formdata).then(jsonObj => 
+      
+       { console.log(jsonObj)
+         for(var i = 0 ; i< jsonObj.length; i++){
+         
+         var file = jsonObj[i];
+         
+         arr.push(file)
+         
+         console.log("arr: "  + arr)
+         
+         if(!file.image){
+            
+               console.log(file.link)         
+               fileUl.innerHTML += "<li id='li"+file.uuid+"'><a href='/admin/common/notice/download?link="+file.link+"'><i class='fas fa-file'></i></a>"+file.fileName+"<button onclick='delTempImg(event, JSON.stringify("+file+"))'>삭제</button></li>" 
+         
+         }else{
+         fileUl.innerHTML += "<li id='li"+file.uuid+"'>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='delTempImg(event, "+JSON.stringify(file)+")'>삭제</button></li>"
 
-			}	
-		}})
-		
-	}, false)
-	
-	document.querySelector(".listBtn").addEventListener("click", function(e){
-		
-		e.preventDefault();
-		
-		actionForm.submit();
-		
-	},false)
-	
-	
-		function delTempImg(event, param){
-		
-		console.log(event)
-			
-		event.preventDefault()
-		
-		console.log(param)
-		
-	 	service.fileDelete(param).then(res => console.log(res))
-	 	
-	 	fileUl.querySelector("#li_"+param.uuid).remove();
+         }   
+      }})
+      
+   }, false)
+   
+   document.querySelector(".listBtn").addEventListener("click", function(e){
+      
+      e.preventDefault();
+      
+      actionForm.submit();
+      
+   },false)
+   
+   
+      function delTempImg(event, param){
+      
+      console.log(event)
+         
+      event.preventDefault()
+      
+      console.log(param)
+      
+       service.fileDelete(param).then(res => console.log(res))
+       
+       fileUl.querySelector("#li"+param.uuid).remove();
 
-	} 
-	
+   } 
 
-	
-/* 	const fileDelBtn = document.querySelector(".fileDelBtn")
-	
-	fileDelBtn.addEventListener("click", function(e){
-		
-		e.preventDefault();
-		
-		
-		
-	},false) */
+
+   
+service.getFiles(${nno}).then(res => res.json()).then(files => {
+	  
 	
 	
-	fileUl.addEventListener("click", function(){
-		
+	   var str = ""
+	   
+	   for(const file of files){
+		   
+		   arr.push(file)
+		   
+		   if(file.image){
+			   str += "<li id='li"+file.uuid+"'>"+file.fileName+"<img src = '/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='deleteImg(event,"+JSON.stringify(file)+")'>삭제</button></li>"
+		   }else{
+			   str +="<li  id='li"+file.uuid+"'><i class='fas fa-file'></i>"+file.fileName+"<button onclick='deleteImg(event,"+JSON.stringify(file)+")'>삭제</button></li>"
+		   }
+		   
+	   }
+	   
+	   fileUl.innerHTML += str
+})
+
+
+   
+function deleteImg(param,file){
 	
-		
-		
-		
-	},false)
+	param.preventDefault()
 	
+	const list = fileUl.querySelectorAll("li")
+    
+    console.log(list)
+	/* function findUuid(element){
+		if(element ==="li#li26f3dcee-d938-49ed-a90f-6a37e51c0369")
+	}
+	 */
 	
+	console.log(arr)
+	
+	service.fileDelete(file)
+	
+	document.querySelector("#li"+file.uuid).remove()
+	
+    
+    
+   /*  for(var i=0; i<list.length; i++){
+    	list[i].onclick
+    } */
+	
+}
+   
+   
 </script>
 
 <%@ include file="../includes/footer.jsp"%>
