@@ -8,6 +8,11 @@
         values (#{uuid}, #{uploadPath}, #{fileName}, #{nno}, #{image})
 	</insert>
 	
+	<delete id="deleteFile">
+		delete from tbl_notice_file where nno = #{nno}
+	</delete>
+	
+	
 	<select id="getFile" resultType="org.judy.common.util.NoticeFileDTO">
 		select * from tbl_notice_file where nno = #{nno}
 	</select>

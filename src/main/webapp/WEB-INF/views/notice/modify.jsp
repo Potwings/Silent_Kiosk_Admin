@@ -108,7 +108,6 @@
    </div>
 </div>
 
-
 <form action="/admin/notice/list" class="actionForm">
    <input type="hidden" name="page" value="${pageDTO.page }"> 
    <input type="hidden" name="perSheet" value="${pageDTO.perSheet }"> 
@@ -129,13 +128,10 @@
 
    }, false)
    
-   
-
-   
    const arr = []
    
    document.querySelector(".modalModifyBtn").addEventListener("click", function(e) {
-      
+	   
       const title = document.querySelector("input[name='title']").value
       
       const category = document.querySelector("input[name='category']").value
@@ -144,15 +140,13 @@
       
       const content = document.querySelector("textarea[name='content']").value
       
-      const obj = {nno:${notice.nno}, title:title, category:category, writer:writer, content:content /*, list:arr */}
+      const obj = {nno:${notice.nno}, title:title, category:category, writer:writer, content:content , list:arr}
       
       service.modify(obj).then(result => document.querySelector(".checkModalBody").innerHTML += "<h3>"+result+"</h3>")
       
       $("#checkModal").modal("show")
       
    }, false)
-   
-   
    
    document.querySelector(".checkBtn").addEventListener("click", function(e){
       
@@ -191,7 +185,7 @@
          if(!file.image){
             
                console.log(file.link)         
-               fileUl.innerHTML += "<li id='li"+file.uuid+"'><a href='/admin/common/notice/download?link="+file.link+"'><i class='fas fa-file'></i></a>"+file.fileName+"<button onclick='delTempImg(event, JSON.stringify("+file+"))'>삭제</button></li>" 
+               fileUl.innerHTML += "<li id='li"+file.uuid+"'><i class='fas fa-file'></i></a>"+file.fileName+"<button onclick='delTempImg(event, JSON.stringify("+file+"))'>삭제</button></li>" 
          
          }else{
          fileUl.innerHTML += "<li id='li"+file.uuid+"'>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='delTempImg(event, "+JSON.stringify(file)+")'>삭제</button></li>"
@@ -217,29 +211,25 @@
       event.preventDefault()
       
       console.log(param)
-      
-       service.fileDelete(param).then(res => console.log(res))
        
        fileUl.querySelector("#li"+param.uuid).remove();
 
    } 
-
-
    
 service.getFiles(${nno}).then(res => res.json()).then(files => {
 	  
-	
-	
 	   var str = ""
 	   
-	   for(const file of files){
+	   for(var i =0; i<files.length; i++){
+		   
+		   let file = files[i]
 		   
 		   arr.push(file)
 		   
 		   if(file.image){
 			   str += "<li id='li"+file.uuid+"'>"+file.fileName+"<img src = '/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='deleteImg(event,"+JSON.stringify(file)+")'>삭제</button></li>"
 		   }else{
-			   str +="<li  id='li"+file.uuid+"'><i class='fas fa-file'></i>"+file.fileName+"<button onclick='deleteImg(event,"+JSON.stringify(file)+")'>삭제</button></li>"
+			   str +="<li id='li"+file.uuid+"'><i class='fas fa-file'></i>"+file.fileName+"<button onclick='deleteImg(event,"+JSON.stringify(file)+")'>삭제</button></li>"
 		   }
 		   
 	   }
@@ -251,27 +241,25 @@ service.getFiles(${nno}).then(res => res.json()).then(files => {
    
 function deleteImg(param,file){
 	
+	const list = fileUl.querySelectorAll("li")
+	
+	const fileli = document.querySelector("#li"+file.uuid)
+	
 	param.preventDefault()
 	
-	const list = fileUl.querySelectorAll("li")
-    
-    console.log(list)
-	/* function findUuid(element){
-		if(element ==="li#li26f3dcee-d938-49ed-a90f-6a37e51c0369")
-	}
-	 */
+	console.log(file)
 	
-	console.log(arr)
+	const check = (element) => JSON.stringify(element) == JSON.stringify(file);
 	
-	service.fileDelete(file)
+	const idx = arr.findIndex(check);
 	
-	document.querySelector("#li"+file.uuid).remove()
+	console.log(idx)
+
+	arr.splice(idx,1)
+   	
+   	console.dir(arr)
 	
-    
-    
-   /*  for(var i=0; i<list.length; i++){
-    	list[i].onclick
-    } */
+	fileli.remove()
 	
 }
    

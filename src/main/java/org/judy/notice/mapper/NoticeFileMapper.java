@@ -8,6 +8,8 @@ public interface NoticeFileMapper {
 	
 	void insertFile(NoticeFileDTO file);
 	
+	void deleteFile(Integer nno);
+	
 	List<NoticeFileDTO> getFile(Integer nno);
 
 }

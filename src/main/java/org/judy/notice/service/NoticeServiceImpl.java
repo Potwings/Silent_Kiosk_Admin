@@ -82,10 +82,22 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
+	@Transactional
 	public void update(NoticeDTO dto) {
 
 		mapper.update(toDomain(dto));
 		
+		fileMapper.deleteFile(dto.getNno());
+		
+		List<NoticeFileDTO> list = dto.getList();
+		
+		for (NoticeFileDTO file : list) {
+			
+			file.setNno(dto.getNno());
+			fileMapper.insertFile(file);
+			
+		}
+			
 	}
 
 }

@@ -92,12 +92,41 @@ public class NoticeServiceTests {
 		
 		NoticeDTO dto = new NoticeDTO();
 		
+		dto.setNno(579);
 		dto.setTitle("test10");
 		dto.setContent("test content");
 		dto.setWriter("user00");
 		dto.setCategory("안내");
 
 		service.update(dto);
+		
+	}
+	
+	@Test
+	public void fileUpdateTest() {
+		
+		ArrayList<NoticeFileDTO> list = new ArrayList<>();
+		
+		NoticeFileDTO fileDto = new NoticeFileDTO();
+		fileDto.setFileName("test1111");
+		fileDto.setNno(579);
+		fileDto.setUploadPath("C111");
+		fileDto.setUuid("adsd234234fsdfs111");
+		fileDto.setImage(true);
+		
+		list.add(fileDto);
+		
+		NoticeDTO dto = new NoticeDTO();
+		
+		dto.setNno(579);
+		dto.setTitle("test10");
+		dto.setContent("test content");
+		dto.setWriter("user00");
+		dto.setCategory("안내");
+		dto.setList(list);
+		
+		service.update(dto);
+		
 		
 	}
 }

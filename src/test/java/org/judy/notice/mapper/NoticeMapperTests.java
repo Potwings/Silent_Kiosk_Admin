@@ -109,4 +109,11 @@ public class NoticeMapperTests {
 		
 	}
 	
+	@Test
+	public void deleteFileTest() {
+	
+		fileMapper.deleteFile(516);
+		
+	}
+	
 }

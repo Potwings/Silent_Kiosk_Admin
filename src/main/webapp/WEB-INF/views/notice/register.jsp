@@ -129,19 +129,34 @@
 	 $("#registerModal").modal("show")
 
 	}, false)
+
+	const fileUl = document.querySelector(".fileUl")
 	
-	
-	const arr = []
+	console.log(fileUl)
 	
 	document.querySelector(".modalRegisterBtn").addEventListener("click", function(e) {
 		
 		const title = document.querySelector("input[name='title']").value
-		
 		const category = document.querySelector("input[name='category']").value
-		
 		const writer = document.querySelector("input[name='writer']").value
-		
 		const content = document.querySelector("textarea[name='content']").value
+		
+		const arr = []
+		
+		const fileLis = fileUl.querySelectorAll("li")
+		
+		for(var fileLi of fileLis){
+		
+		const uuid = fileLi.getAttribute('data-uuid')
+		const fileName = fileLi.getAttribute('data-fileName')
+		const uploadPath = fileLi.getAttribute('data-uploadPath')
+		const image = fileLi.getAttribute('data-image')
+		
+		const fileObj = {uuid:uuid, fileName:fileName, uploadPath:uploadPath, image:image}
+		
+		arr.push(fileObj)
+		
+		}
 		
 		const obj = {title:title, category:category, writer:writer, content:content, list:arr}
 		
@@ -162,7 +177,6 @@
 	},false)
 	
 	
-	const fileUl = document.querySelector(".fileUl")
 	
 	document.querySelector("input[name='files']").addEventListener("change", function(e){
 		
@@ -185,17 +199,13 @@
 			
 			var file = jsonObj[i];
 			
-			arr.push(file)
-			
-			console.log("arr: "  + arr)
-			
 			if(!file.image){
 				
 					console.log(file.link)			
-					fileUl.innerHTML += "<li><a href='/admin/common/notice/download?link="+file.link+"'><i class='fas fa-file'></i></a>"+file.fileName+"<button onclick='delTempImg("+JSON.stringify(file)+")'>삭제</button></li>" 
+					fileUl.innerHTML += "<li id='li"+file.uuid+"' data-uuid='"+file.uuid+"' data-fileName='"+file.fileName+"' data-uploadPath='"+file.uploadPath+"' data-image='"+file.image+"'><a href='/admin/common/notice/download?link="+file.link+"'><i class='fas fa-file'></i></a>"+file.fileName+"<button onclick='delTempImg(event,"+JSON.stringify(file)+")'>삭제</button></li>" 
 			
 			}else{
-			fileUl.innerHTML += "<li>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='delTempImg("+JSON.stringify(file)+")'>삭제</button></li>"
+			fileUl.innerHTML += "<li id='li"+file.uuid+"' data-uuid='"+file.uuid+"' data-fileName='"+file.fileName+"' data-uploadPath='"+file.uploadPath+"' data-image='"+file.image+"'>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='delTempImg(event,"+JSON.stringify(file)+")'>삭제</button></li>"
 
 			}	
 		}})
@@ -210,14 +220,17 @@
 		
 	},false)
 	
-	function delTempImg(param){
+	function delTempImg(event, file){
 		
-		console.log(param)
+		event.preventDefault()
 		
-		service.fileDelete(param).then(res => console.log(res))
+		const fileLi = document.querySelector("#li"+file.uuid)
+		
+		fileLi.remove()
+		
+		
 
 	}
 	
 </script>
-
 <%@ include file="../includes/footer.jsp"%>
