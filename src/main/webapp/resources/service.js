@@ -13,7 +13,7 @@ var service = (function() {
 	
 		return fetch("/admin/notice/register",{
 				method : 'post',
-				headers : {'Content-Type' : 'application/json; charset=UTF-8'},
+				headers : {'Content-Type' : 'application/json'},
 				body : JSON.stringify(obj)
 		}).then(res => res.text())
 	
@@ -26,6 +26,7 @@ var service = (function() {
 				body : formdata
 		}).then(res => res.json())
 	}
+	
 	
 	function modify(obj){
 		
@@ -52,7 +53,37 @@ var service = (function() {
 		})
 	}
 	
+	
 
-        return {deleteNotice:deleteNotice, register:register, upload:upload, modify:modify, fileDelete:fileDelete, getFiles:getFiles}
+     function sendUpload(fd){
+      return fetch("/admin/common/manager/doc/upload",{
+         method : 'post',
+         body : fd
+      }).then(res => res.json())
+   }
+   
+   function sendUploadThumb(fd){
+   
+   	sendUpload(fd).then(result => {
+      for (var i = 0; i < result.length; i++) {
+         let file = result[i]
+         console.log(file.link)
+      document.querySelector(".fileThumb").innerHTML = "<img src='/admin/common/manager/view?link="+file.thumbLink+"' style = 'width: 90px; height: 90px' />" +
+                                           "<button onclick=sendRemove("+JSON.stringify(file)+")'>DEL</button>"
+         
+      }
+   })
+   }
+       
+    function sendRegister(obj){
+		return fetch("/admin/manager/register" , {
+			method : 'post',
+			headers : {"Content-Type":"application/json"},
+			body : JSON.stringify(obj)
+		}).then(res => res.text())
+	}   
+       
+       
+        return {deleteNotice:deleteNotice, register:register, upload:upload , modify:modify, fileDelete:fileDelete, getFiles:getFiles,sendUpload:sendUpload, sendUploadThumb:sendUploadThumb , sendRegister:sendRegister}
 
     }())

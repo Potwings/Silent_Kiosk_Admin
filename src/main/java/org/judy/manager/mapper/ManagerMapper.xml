@@ -50,7 +50,19 @@
   		<![CDATA[
   		order by regdate desc limit #{skip}, #{perSheet}
   		]]>
-	</select>
+	    </select>
+	    
+	    <select id="appManagerList" resultType="org.judy.manager.domain.Manager">
+		<![CDATA[
+  		select * from tbl_manager tm left join tbl_store ts on tm.mid = ts.mid 
+  		where approval = 0
+  		]]> 
+  		<include refid="search"/>
+  		
+  		<![CDATA[
+  		order by regdate desc limit #{skip}, #{perSheet}
+  		]]>
+	    </select>
 	
 	<select id="selectOne" resultType="org.judy.manager.domain.Manager">
 		<![CDATA[
@@ -62,8 +74,8 @@
 
 	<insert id="registerMan">
 	<![CDATA[
-  		insert into tbl_manager ( mid , mpw , email , phone , logoimg)
-		values (#{mid} , #{mpw} , #{email} , #{phone} , #{logoImg})
+  		insert into tbl_manager ( mid , mpw , email , phone , cdn , health , hygiene , license)
+		values (#{mid} , #{mpw} , #{email} , #{phone} , #{cdn} , #{health} , #{hygiene} , #{license})
   		]]>
 	</insert>
 	
@@ -79,6 +91,12 @@
 	<update id = "enabled">
 	<![CDATA[
 	update tbl_manager set enabled = if(enabled = 0, 1, 0) where mid = #{mid}
+	]]>
+	</update>
+	
+	<update id = "approval">
+	<![CDATA[
+	update tbl_manager set approval = 1 where mid = #{mid}
 	]]>
 	</update>
 	

@@ -10,4 +10,16 @@
   		]]>
 	</select>
 
+	<select id="findByMid" resultType="org.judy.store.domain.DocumentFile">
+		<![CDATA[
+  		select * from tbl_document where mid = #{mid}
+  		]]>
+	</select>
+
+	<delete id="deleteDoc">
+		<![CDATA[
+  		delete from tbl_document where muuid= #{muuid}
+  		]]>
+	</delete>
+
 </mapper>

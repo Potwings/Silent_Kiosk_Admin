@@ -17,6 +17,8 @@ import lombok.extern.log4j.Log4j;
 @RequiredArgsConstructor
 public class ManagerServiceImpl implements ManagerService {
 
+
+
 	private final ManagerMapper mapper;
 	
 	
@@ -45,6 +47,13 @@ public class ManagerServiceImpl implements ManagerService {
 			return toDTO(manager);
 		}).collect(Collectors.toList());
 	}
+	
+	@Override
+	public List<ManagerDTO> appManagerList(PageDTO pageDTO) {
+		return mapper.appManagerList(pageDTO).stream().map(manager -> {
+			return toDTO(manager);
+		}).collect(Collectors.toList());
+	}
 
 	@Override
 	public int totalMan(PageDTO pageDTO) {
@@ -60,12 +69,22 @@ public class ManagerServiceImpl implements ManagerService {
 
 
 	@Override
+	public void approval(String mid) {
+		log.info("approval..............");
+		mapper.approval(mid);
+	}
+	
+
+	@Override
 	public void registerMan(ManagerDTO managerDTO) {
 		log.info("registerMan.....");
 		Manager manager = toDomain(managerDTO);
 		mapper.registerMan(manager);
 		
 	}
+
+
+	
 
 
 	

@@ -23,6 +23,7 @@ public class Notice {
 	private String writer;
 	private Boolean show;
 	private String category;
+	private boolean img;
+	private boolean file;
 	private Date regdate, updatedate;
-	
 }

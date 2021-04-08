@@ -18,6 +18,8 @@ public class NoticeDTO {
 	private String writer;
 	private Boolean show;
 	private String category;
+	private boolean img;
+	private boolean file;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	private Date regdate, updatedate;
 	private ArrayList<NoticeFileDTO> list;

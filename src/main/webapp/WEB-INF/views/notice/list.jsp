@@ -48,6 +48,7 @@
 							<table class="table">
 								<thead class=" text-primary">
 									<th>Nno</th>
+									<th>thumb</th>
 									<th>Category</th>
 									<th>Title</th>
 									<th>Writer</th>
@@ -58,8 +59,9 @@
 								<c:forEach items="${list}" var="notice" >
 								<tr data-nno="${notice.nno }">
 								<td>${notice.nno }</td>
+								<td><c:if test="${notice.img}"><img src="/admin/common/notice/thumb?nno=${notice.nno}"></c:if></td>
 								<td>${notice.category }</td>
-								<td>${notice.title }</td>
+								<td>${notice.title }<c:if test="${notice.file}">&nbsp;<i class="fas fa-paperclip"></i></c:if></td>
 								<td>${notice.writer }</td>
 								<td>${notice.regdate }</td>
 								<td>${notice.updatedate }</td>

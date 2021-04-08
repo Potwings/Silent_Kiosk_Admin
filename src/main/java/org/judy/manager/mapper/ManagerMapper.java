@@ -11,6 +11,8 @@ public interface ManagerMapper {
 	
 	public List<Manager> delManagerList(PageDTO pageDTO);
 	
+	public List<Manager> appManagerList(PageDTO pageDTO);
+	
 	public Manager selectOne(String mid);
 	
 	public void registerMan(Manager manager);
@@ -20,5 +22,7 @@ public interface ManagerMapper {
 	public void deleteMan(String mid);
 	
 	public int enabled(String mid);
+	
+	public void approval(String mid);
 	
 }

@@ -25,9 +25,9 @@ The above copyright notice and this permission notice shall be included in all c
   <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
   <link href="../resources/assets/css/judyCustom.css" rel="stylesheet" />
+  <script src="../resources/service.js"></script>
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
-  
   <!-- CSS Files -->
   <link href="../resources/assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
@@ -44,7 +44,7 @@ The above copyright notice and this permission notice shall be included in all c
 
         Tip 2: you can also add an image using data-image tag
     -->
-      <div class="logo"><a href="http://localhost:8080/admin/notice/list" class="simple-text logo-normal">
+      <div class="logo"><a href="/admin/notice/list" class="simple-text logo-normal">
           Creative Tim
         </a></div>
       <div class="sidebar-wrapper">

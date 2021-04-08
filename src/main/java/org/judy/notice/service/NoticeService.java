@@ -23,6 +23,8 @@ public interface NoticeService {
 	
 	void update(NoticeDTO dto);
 	
+	NoticeFileDTO getThumb(Integer nno);
+	
 	default NoticeDTO toDTO(Notice vo) {
 		
 		NoticeDTO dto = new NoticeDTO();
@@ -35,6 +37,8 @@ public interface NoticeService {
 		dto.setUpdatedate(vo.getUpdatedate());
 		dto.setShow(vo.getShow());
 		dto.setCategory(vo.getCategory());
+		dto.setImg(vo.isImg());
+		dto.setFile(vo.isFile());
 		
 		return dto;
 	}
@@ -51,6 +55,8 @@ public interface NoticeService {
 				.updatedate(dto.getUpdatedate())
 				.show(dto.getShow())
 				.category(dto.getCategory())
+				.img(dto.isImg())
+				.file(dto.isFile())
 				.build();
 		
 		return vo;	

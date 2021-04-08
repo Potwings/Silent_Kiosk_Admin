@@ -1,10 +1,6 @@
 package org.judy.notice.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.judy.common.config.CommonConfig;
-import org.judy.common.util.NoticeFileDTO;
 import org.judy.common.util.PageDTO;
 import org.judy.notice.config.NoticeConfig;
 import org.judy.notice.dto.NoticeDTO;
@@ -46,24 +42,12 @@ public class NoticeServiceTests {
 	@Test
 	public void testInsert() {
 		
-		ArrayList<NoticeFileDTO> list = new ArrayList<>();
-		
-		NoticeFileDTO fileDto = new NoticeFileDTO();
-		fileDto.setFileName("t");
-		fileDto.setNno(516);
-		fileDto.setUploadPath("C");
-		fileDto.setUuid("adsd234234fsdfs");
-		fileDto.setImage(true);
-		
-		list.add(fileDto);
-		
 		NoticeDTO dto = new NoticeDTO();
 		
 		dto.setTitle("test10");
 		dto.setContent("test content");
 		dto.setWriter("user00");
 		dto.setCategory("안내");
-		dto.setList(list);
 		
 		service.insert(dto);
 		
@@ -83,50 +67,8 @@ public class NoticeServiceTests {
 	}
 	
 	@Test
-	public void testGetFile() {
-		log.info(service.getFile(516));
+	public void testThumb() {
+		log.info(service.getThumb(612));
 	}
 	
-	@Test
-	public void testUpdate() {
-		
-		NoticeDTO dto = new NoticeDTO();
-		
-		dto.setNno(579);
-		dto.setTitle("test10");
-		dto.setContent("test content");
-		dto.setWriter("user00");
-		dto.setCategory("안내");
-
-		service.update(dto);
-		
-	}
-	
-	@Test
-	public void fileUpdateTest() {
-		
-		ArrayList<NoticeFileDTO> list = new ArrayList<>();
-		
-		NoticeFileDTO fileDto = new NoticeFileDTO();
-		fileDto.setFileName("test1111");
-		fileDto.setNno(579);
-		fileDto.setUploadPath("C111");
-		fileDto.setUuid("adsd234234fsdfs111");
-		fileDto.setImage(true);
-		
-		list.add(fileDto);
-		
-		NoticeDTO dto = new NoticeDTO();
-		
-		dto.setNno(579);
-		dto.setTitle("test10");
-		dto.setContent("test content");
-		dto.setWriter("user00");
-		dto.setCategory("안내");
-		dto.setList(list);
-		
-		service.update(dto);
-		
-		
-	}
 }

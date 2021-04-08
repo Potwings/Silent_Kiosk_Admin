@@ -15,6 +15,7 @@
 						</div>
 						<div class="cardHeaderBtn" >
 							<button type="submit" class="delListBtn btn btn-primary pull-right" style = "background-color: #ffffff; color: #ee6d09;">Del List</button>
+							<button type="submit" class="appListBtn btn btn-primary pull-right" style = "background-color: #ffffff; color: #ee6d09;">App List</button>
 						</div>
 					</div>
 
@@ -52,11 +53,9 @@
 						<div class="table-responsive">
 							<table class="table">
 								<thead class=" text-primary">
-									<th>LOGO</th>
 									<th>ID</th>
 									<th>Email</th>
 									<th>Phone</th>
-									<th>Sname</th>
 									<th>Enabled</th>
 									<th>Approval</th>
 									<th>RegDate</th>
@@ -65,11 +64,9 @@
 								<tbody class="tableList">
 									<c:forEach items="${list }" var="manager">
 										<tr class="readBtn" data-mid=${manager.mid }>
-											<td><img src=${manager.logoImg } /></td>
 											<td>${manager.mid}</td>
 											<td>${manager.email}</td>
 											<td>${manager.phone}</td>
-											<td>${manager.sname}</td>
 											<td>${manager.enabled}</td>
 											<td>${manager.approval}</td>
 											<td>${manager.regdate}</td>
@@ -89,6 +86,8 @@
 
 								<!-- pagination -->
 								<div>
+
+
 									<ul class="pagination justify-content-center">
 										<c:if test="${pageMaker.prev}">
 											<li class="page-item"><a class="page-link"
@@ -256,6 +255,13 @@ document.querySelector(".delListBtn").addEventListener("click", function(e){
 	e.preventDefault()
 	
 	location.href="/admin/manager/delList"
+})
+
+//appList
+document.querySelector(".appListBtn").addEventListener("click", function(e){
+	e.preventDefault()
+	
+	location.href="/admin/manager/appList"
 })
 
 // register

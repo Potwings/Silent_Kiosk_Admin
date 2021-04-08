@@ -21,6 +21,7 @@
 					<div class="btnContainer">
 					<button class="btn btn-primary btn-round deleteBtn" >삭제</button>
 					<button class="btn btn-primary btn-round modifyBtn" >수정</button>
+					<button class="btn btn-primary btn-round listBtn">목록으로</button>
 					</div>	
 				</div>
 			</div>
@@ -80,6 +81,12 @@
 const header = document.querySelector(".noticeHeader")
 const content = document.querySelector(".noticeContent")
 const actionForm = document.querySelector(".actionForm")
+
+document.querySelector(".listBtn").addEventListener("click", function(e){
+	
+	actionForm.submit()
+	
+}, false)
 
 
 document.querySelector(".deleteBtn").addEventListener("click", function(e){
