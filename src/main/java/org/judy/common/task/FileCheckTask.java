@@ -70,5 +70,37 @@ public class FileCheckTask {
 		}
 	}
 
+	@Scheduled(cron = "0 0 2 * * *")
+	public void deleteTemp() {
+
+		String path = "C:\\upload\\temp\\admin";
+
+		delFolder(path);
+
+	}
+
+	public static void delFolder(String path) {
+
+		File folder = new File(path);
+		try {
+			if (folder.exists()) {
+				File[] folderList = folder.listFiles();
+
+				for (int i = 0; i < folderList.length; i++) {
+					if (folderList[i].isFile()) {
+						folderList[i].delete();
+						log.info("File Delete.....");
+					} else {
+						delFolder(folderList[i].getPath());
+						log.info("Folder Delete.....");
+					}
+					folderList[i].delete();
+				}
+				folder.delete();
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+	}
 
 }

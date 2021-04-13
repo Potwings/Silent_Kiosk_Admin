@@ -16,6 +16,7 @@ import org.judy.notice.service.NoticeService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,7 @@ public class NoticeController {
 	private final NoticeService service;
 
 	@GetMapping("/list")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MEMBER','ROLE_ADV')")
 	public void getList(PageDTO pageDTO, Model model) {
 
 		PageMaker pageMaker = new PageMaker(pageDTO, service.getTotal(pageDTO));
@@ -47,17 +49,20 @@ public class NoticeController {
 	}
 
 	@GetMapping("/read")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MEMBER','ROLE_ADV')")
 	public void getOne(@ModelAttribute("nno") Integer nno, PageDTO pageDTO, Model model) {
 
 		model.addAttribute("notice", service.getOne(nno));
 	}
 
 	@GetMapping("/register")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void getInsert(PageDTO pageDTO) {
 
 	}
 
 	@PostMapping("/register")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<String> postInsert(@RequestBody NoticeDTO dto) {
 
 		log.info("insert.................");
@@ -82,18 +87,30 @@ public class NoticeController {
 	}
 
 	@GetMapping("/modify")
-	public void getModify(@ModelAttribute("nno") Integer nno, Model model) {
+	@PreAuthorize("principal.username == #writer")
+	public void getModify(@ModelAttribute("nno") Integer nno, Model model, PageDTO pageDTO, String writer) {
 
 		model.addAttribute("notice", service.getOne(nno));
 
 	}
 
 	@PostMapping("/modify")
+	@PreAuthorize("principal.username == #dto.writer")
 	public ResponseEntity<String> modify(@RequestBody NoticeDTO dto) {
 
 		log.info("dto: " + dto);
 
 		service.update(dto);
+
+		String path = "C:\\upload\\admin\\notice\\" + getFolder();
+
+		File uploadPath = new File(path);
+
+		if (uploadPath.exists() == false) {
+			uploadPath.mkdirs();
+		}
+
+		dto.getList().forEach(file -> copyFile(file));
 
 		HttpHeaders resHeaders = new HttpHeaders();
 		resHeaders.add("Content-Type", "application/json;charset=UTF-8");
@@ -103,7 +120,8 @@ public class NoticeController {
 
 	@PostMapping("/delete")
 	@ResponseBody
-	public ResponseEntity<String> delete(Integer nno) {
+	@PreAuthorize("principal.username == #writer")
+	public ResponseEntity<String> delete(Integer nno, String writer) {
 
 		log.info("delete................");
 

@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="../includes/header.jsp"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <div class="content">
 	<div class="container-fluid">
@@ -47,21 +48,21 @@
 						<div class="table-responsive">
 							<table class="table">
 								<thead class=" text-primary">
-									<th>Nno</th>
-									<th>thumb</th>
-									<th>Category</th>
-									<th>Title</th>
-									<th>Writer</th>
-									<th>regDate</th>
-									<th>updateDate</th>
+									<th>번호</th>
+									<th>이미지</th>
+									<th>제목</th>
+									<th>분류</th>
+									<th>작성자</th>
+									<th>등록일자</th>
+									<th>수정일자</th>
 								</thead>
 								<tbody class="tList">
 								<c:forEach items="${list}" var="notice" >
 								<tr data-nno="${notice.nno }">
 								<td>${notice.nno }</td>
 								<td><c:if test="${notice.img}"><img src="/admin/common/notice/thumb?nno=${notice.nno}"></c:if></td>
-								<td>${notice.category }</td>
-								<td>${notice.title }<c:if test="${notice.file}">&nbsp;<i class="fas fa-paperclip"></i></c:if></td>
+								<td>${notice.title}<c:if test="${notice.file}">&nbsp;<i class="fas fa-paperclip"></i></c:if></td>
+								<td>${notice.category}</td>
 								<td>${notice.writer }</td>
 								<td>${notice.regdate }</td>
 								<td>${notice.updatedate }</td>
@@ -71,7 +72,10 @@
 							</table>
 						</div>
 					<div class="btnContainer">
+					<sec:authentication property="principal" var="pinfo"/>
+					<sec:authorize access="hasRole('ROLE_ADMIN')"> 
 						<button class="btn btn-primary btn-round registerBtn">등록하기</button>
+					</sec:authorize>
 					</div>
 
 						<div>
@@ -217,14 +221,17 @@ document.querySelector(".tList").addEventListener("click", function(e){
 	 
 }, false)
 
-document.querySelector(".registerBtn").addEventListener("click", function(e){
+const registerBtn = document.querySelector(".registerBtn")
+
+if(registerBtn !== null){
+registerBtn.addEventListener("click", function(e){
 	
 	actionForm.setAttribute("action","/admin/notice/register")
 	
 	actionForm.submit()
 	
-	
 },false)
+}
   
 </script>
 

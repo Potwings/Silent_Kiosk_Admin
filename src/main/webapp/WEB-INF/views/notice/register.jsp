@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="../includes/header.jsp"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <div class="content">
         <div class="container-fluid">
@@ -23,13 +24,16 @@
                       <div class="col-md-3">
                         <div class="form-group bmd-form-group">
                           <label class="bmd-label-floating">작성자</label>
-                          <input type="text" name="writer" class="form-control">
+                          <input type="text" name="writer" value='<sec:authentication property="principal.username"/>' class="form-control" readonly="readonly">
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group bmd-form-group">
-                          <label class="bmd-label-floating">카테고리</label>
-                          <input type="text" name="category" class="form-control">
+                           <select style='width:px;' class="selectCate custom-select">
+                          <option value="안내">안내</option>
+                          <option value="긴급">긴급</option>
+                          <option value="이벤트">이벤트</option>
+                          </select>
                         </div>
                       </div>
                     </div>
@@ -108,8 +112,7 @@
 		</div>
 	</div>
 </div>
-
-
+	
 <form action="/admin/notice/list" class="actionForm">
 	<input type="hidden" name="page" value="${pageDTO.page }"> 
 	<input type="hidden" name="perSheet" value="${pageDTO.perSheet }"> 
@@ -120,7 +123,22 @@
 
 <script src="/admin/resources/service.js"></script>
 <script>
+	
+	const csrfTokenValue = "${_csrf.token}"
+
 	const actionForm = document.querySelector(".actionForm")
+	
+	const sCate = document.querySelector(".selectCate")
+	
+	var cate = "";
+	
+		sCate.addEventListener("change", function(){
+			
+			const cateIdx = sCate.selectedIndex
+			
+			cate = sCate[cateIdx].value
+			
+		},false)
 
 	document.querySelector(".registerBtn").addEventListener("click", function(e) {
 
@@ -132,12 +150,9 @@
 
 	const fileUl = document.querySelector(".fileUl")
 	
-	console.log(fileUl)
-	
 	document.querySelector(".modalRegisterBtn").addEventListener("click", function(e) {
 		
 		const title = document.querySelector("input[name='title']").value
-		const category = document.querySelector("input[name='category']").value
 		const writer = document.querySelector("input[name='writer']").value
 		const content = document.querySelector("textarea[name='content']").value
 		
@@ -158,9 +173,9 @@
 		
 		}
 		
-		const obj = {title:title, category:category, writer:writer, content:content, list:arr}
+		const obj = {title:title, category:cate, writer:writer, content:content, list:arr}
 		
-		service.register(obj).then(result => document.querySelector(".checkModalBody").innerHTML += "<p>"+result+"<p>");
+		service.register(obj,csrfTokenValue).then(result => document.querySelector(".checkModalBody").innerHTML += "<p>"+result+"<p>");
 		
 		 $("#registerModal").modal("hide")
 		
@@ -169,13 +184,11 @@
 	}, false)
 	
 	
-	
 	document.querySelector(".checkBtn").addEventListener("click", function(e){
 		
 		location.href="/admin/notice/list"
 		
 	},false)
-	
 	
 	
 	document.querySelector("input[name='files']").addEventListener("change", function(e){
@@ -192,7 +205,7 @@
 			
 		}
 		
-		service.upload(formdata).then(jsonObj => 
+		service.upload(formdata,csrfTokenValue).then(jsonObj => 
 		
 		 { console.log(jsonObj)
 			for(var i = 0 ; i< jsonObj.length; i++){
@@ -205,7 +218,7 @@
 					fileUl.innerHTML += "<li id='li"+file.uuid+"' data-uuid='"+file.uuid+"' data-fileName='"+file.fileName+"' data-uploadPath='"+file.uploadPath+"' data-image='"+file.image+"'><i class='fas fa-file'></i>"+file.fileName+"<button onclick='delTempImg(event,"+JSON.stringify(file)+")'>삭제</button></li>" 
 			
 			}else{
-			fileUl.innerHTML += "<li id='li"+file.uuid+"' data-uuid='"+file.uuid+"' data-fileName='"+file.fileName+"' data-uploadPath='"+file.uploadPath+"' data-image='"+file.image+"'>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='delTempImg(event,"+JSON.stringify(file)+")'>삭제</button></li>"
+			fileUl.innerHTML += "<li id='li"+file.uuid+"' data-uuid='"+file.uuid+"' data-fileName='"+file.fileName+"' data-uploadPath='"+file.uploadPath+"' data-image='"+file.image+"'>"+file.fileName+"<img src='/admin/common/notice/preview?link="+file.thumbLink+"'/><button onclick='delTempImg(event,"+JSON.stringify(file)+")'>삭제</button></li>"
 
 			}	
 		}})
@@ -228,8 +241,6 @@
 		
 		fileLi.remove()
 		
-		
-
 	}
 	
 </script>

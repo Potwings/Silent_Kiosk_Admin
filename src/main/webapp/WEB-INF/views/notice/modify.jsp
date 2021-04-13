@@ -58,7 +58,8 @@
 							</div>
 							<div class="btnContainer">
 								<button class="btn btn-primary btn-round modifyBtn">수정</button>
-								<button class="btn btn-primary btn-round cancelBtn">수정 취소</button>
+								<button class="btn btn-primary btn-round cancelBtn">수정
+									취소</button>
 							</div>
 						</form>
 					</div>
@@ -111,16 +112,19 @@
 	</div>
 </div>
 
-<form action="/admin/notice/list" class="actionForm">
-	<input type="hidden" name="page" value="${pageDTO.page }"> <input
-		type="hidden" name="perSheet" value="${pageDTO.perSheet }"> <input
-		type="hidden" name="type" value="${pageDTO.type }"> <input
-		type="hidden" name="keyword" value="${pageDTO.keyword }">
+<form action="/admin/notice/read" class="actionForm">
+	<input type="hidden" name="page" value="${pageDTO.page }"> 
+	<input type="hidden" name="perSheet" value="${pageDTO.perSheet }">
+	<input type="hidden" name="type" value="${pageDTO.type }">
+	<input type="hidden" name="keyword" value="${pageDTO.keyword }">
 </form>
 
 
 <script src="/admin/resources/service.js"></script>
 <script>
+
+   const csrfTokenValue = "${_csrf.token}";
+
    const actionForm = document.querySelector(".actionForm")
 
    document.querySelector(".modifyBtn").addEventListener("click", function(e) {
@@ -145,7 +149,7 @@
       
       const obj = {nno:${notice.nno}, title:title, category:category, writer:writer, content:content , list:arr}
       
-      service.modify(obj).then(result => document.querySelector(".checkModalBody").innerHTML += "<h3>"+result+"</h3>")
+      service.modify(obj,csrfTokenValue).then(result => document.querySelector(".checkModalBody").innerHTML += "<h3>"+result+"</h3>")
       
       $("#checkModal").modal("show")
       
@@ -180,7 +184,7 @@
          
       }
       
-      service.upload(formdata).then(jsonObj => 
+      service.upload(formdata,csrfTokenValue).then(jsonObj => 
       
        { console.log(jsonObj)
          for(var i = 0 ; i< jsonObj.length; i++){
@@ -197,7 +201,7 @@
                fileUl.innerHTML += "<li id='li"+file.uuid+"'><i class='fas fa-file'></i></a>"+file.fileName+"<button onclick='delTempImg(event, JSON.stringify("+file+"))'>삭제</button></li>" 
          
          }else{
-         fileUl.innerHTML += "<li id='li"+file.uuid+"'>"+file.fileName+"<img src='/admin/common/notice/view?link="+file.thumbLink+"'/><button onclick='delTempImg(event, "+JSON.stringify(file)+")'>삭제</button></li>"
+         fileUl.innerHTML += "<li id='li"+file.uuid+"'>"+file.fileName+"<img src='/admin/common/notice/preview?link="+file.thumbLink+"'/><button onclick='delTempImg(event, "+JSON.stringify(file)+")'>삭제</button></li>"
 
          }   
       }})
@@ -209,8 +213,6 @@
       e.preventDefault();
       
       actionForm.innerHTML += "<input type='hidden' name='nno' value='${notice.nno }'>"
-          
-      actionForm.setAttribute("action", "/admin/notice/read")
       
       actionForm.submit();
       

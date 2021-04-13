@@ -2,6 +2,7 @@ package org.judy.common.controller;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
@@ -21,6 +22,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,6 +84,7 @@ public class FileUploadController {
 	}
 
 	@PostMapping("/notice/delete")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<String> postDelete(@RequestBody NoticeFileDTO file) {
 
 		log.info("link:" + file);
@@ -124,53 +127,29 @@ public class FileUploadController {
 		log.info("view.....................");
 		log.info("Link:" + link);
 
+		String path = "C:\\upload\\admin\\notice";
+
+		return getView(path,link);
+	}
+
+	@GetMapping("/notice/preview")
+	@ResponseBody
+	public ResponseEntity<byte[]> getPreview(String link) {
+
+		log.info("view.....................");
+		log.info("Link:" + link);
+
 		String path = "C:\\upload\\temp\\admin\\notice";
 
-		ResponseEntity<byte[]> result = null;
-
-		try {
-			File targetFile = encoding(link, path);
-
-			HttpHeaders header = new HttpHeaders();
-
-			header.add("Content-Type", Files.probeContentType(targetFile.toPath()));
-
-			result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(targetFile), header, HttpStatus.OK);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return result;
+		return getView(path, link);
 	}
 
 	@GetMapping("/manager/view")
 	public ResponseEntity<byte[]> view(String link) {
 
 		String path = "C:\\upload\\temp\\admin\\manager";
-		ResponseEntity<byte[]> result = null;
 
-		String realPath = "";
-
-		try {
-
-			File targetFile = encoding(link, path);
-
-			log.info("--------------------------------------");
-			log.info(targetFile);
-			log.info("--------------------------------------");
-
-			HttpHeaders header = new HttpHeaders();
-
-			header.add("Content-Type", Files.probeContentType(targetFile.toPath()));
-
-			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(targetFile), header, HttpStatus.OK);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return result;
+		return getView(path,link);
 	}
 
 	@PostMapping(value = "/manager/upload", produces = { MediaType.APPLICATION_JSON_VALUE })
@@ -295,8 +274,6 @@ public class FileUploadController {
 
 		String path = "C:\\upload\\temp\\admin\\manager";
 
-		String str = "";
-
 		File targetFile = encoding(link, path);
 
 		log.info(targetFile);
@@ -357,6 +334,7 @@ public class FileUploadController {
 	// notice
 
 	@PostMapping("/notice/upload")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<NoticeFileDTO>> uploadPost(MultipartFile[] uploadFile) {
 
 		String path = "C:\\upload\\temp\\admin\\notice";
@@ -470,6 +448,24 @@ public class FileUploadController {
 			e.printStackTrace();
 		}
 		return viewFile;
+	}
+	
+	private ResponseEntity<byte[]> getView(String path,String link) {
+
+		ResponseEntity<byte[]> result = null;
+
+		File targetFile = encoding(link, path);
+
+		try {
+			HttpHeaders header = new HttpHeaders();
+			header.add("Content-Type", Files.probeContentType(targetFile.toPath()));
+			result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(targetFile), header, HttpStatus.OK);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;
 	}
 
 }

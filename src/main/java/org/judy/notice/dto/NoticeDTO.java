@@ -1,9 +1,13 @@
 package org.judy.notice.dto;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
+
 import java.sql.Date;
 import java.util.ArrayList;
 
 import org.judy.common.util.NoticeFileDTO;
+import org.junit.validator.ValidateWith;
+import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
