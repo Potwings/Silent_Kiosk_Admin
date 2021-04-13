@@ -1,13 +1,12 @@
 package org.judy.notice.dto;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-
 import java.sql.Date;
 import java.util.ArrayList;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+
 import org.judy.common.util.NoticeFileDTO;
-import org.junit.validator.ValidateWith;
-import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -17,10 +16,12 @@ import lombok.Data;
 public class NoticeDTO {
 	
 	private Integer nno;
+	@NotBlank(message = "제목을 입력하세요")
 	private String title;
+	@NotBlank(message = "내용을 입력하세요")
 	private String content;
 	private String writer;
-	private Boolean show;
+	private Boolean showed;
 	private String category;
 	private boolean img;
 	private boolean file;

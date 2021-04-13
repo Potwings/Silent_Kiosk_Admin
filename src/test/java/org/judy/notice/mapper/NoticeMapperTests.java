@@ -30,6 +30,11 @@ public class NoticeMapperTests {
 	}
 	
 	@Test
+	public void topList() {
+		log.info(mapper.topList());
+	}
+	
+	@Test
 	public void getOneTest() {
 		log.info(mapper.getOne(20));	
 	}

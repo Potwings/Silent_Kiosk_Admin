@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.validation.Valid;
+
 import org.judy.common.util.NoticeFileDTO;
 import org.judy.common.util.PageDTO;
 import org.judy.common.util.PageMaker;
@@ -19,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,6 +48,7 @@ public class NoticeController {
 
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("list", service.getList(pageDTO));
+		model.addAttribute("topList", service.topList());
 
 	}
 
@@ -63,7 +67,7 @@ public class NoticeController {
 
 	@PostMapping("/register")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<String> postInsert(@RequestBody NoticeDTO dto) {
+	public ResponseEntity<Object> postInsert(@RequestBody @Valid NoticeDTO dto, BindingResult bindingResult) {
 
 		log.info("insert.................");
 		log.info("------------------");
@@ -79,10 +83,17 @@ public class NoticeController {
 		}
 
 		dto.getList().forEach(file -> copyFile(file));
+		
+		log.info(bindingResult);
 
+		if(bindingResult.hasErrors()) {
+			
+			return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.OK);
+		}
+		
 		service.insert(dto);
 
-		return new ResponseEntity<String>("success", HttpStatus.OK);
+		return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.OK);
 
 	}
 

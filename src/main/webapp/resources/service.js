@@ -17,7 +17,7 @@ var service = (function() {
 				headers : {'Content-Type' : 'application/json',
 							'X-CSRF-TOKEN': csrfTokenValue},
 				body : JSON.stringify(obj)
-		}).then(res => res.text())
+		}).then(res => res.json())
 	
 	}
 	

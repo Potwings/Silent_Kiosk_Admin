@@ -57,6 +57,8 @@
                      </ul>
                       </div>
                        <div class="btnContainer">
+                       <p>고정</p>
+                       <input type="checkbox" onclick="checkBox()" name="showed">
 						<button class="btn btn-primary btn-round registerBtn">등록</button>
 						<button class="btn btn-primary btn-round listBtn">등록 취소</button>
 					</div>
@@ -107,7 +109,7 @@
 			<div class="modal-body checkModalBody">
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary checkBtn">확인</button>
+				<button type="button" onclick='location.href="/admin/notice/list"' class="btn btn-primary checkBtn">확인</button>
 			</div>
 		</div>
 	</div>
@@ -123,14 +125,32 @@
 
 <script src="/admin/resources/service.js"></script>
 <script>
-	
+
+	let check = '0'
+
+	function checkBox(){
+		
+		if(check=='0'){
+			
+			check = '1'
+			
+		}
+		else if(check=='1')
+		{
+			
+			check = '0'
+			
+		}
+		
+	}
+
 	const csrfTokenValue = "${_csrf.token}"
 
 	const actionForm = document.querySelector(".actionForm")
 	
 	const sCate = document.querySelector(".selectCate")
 	
-	var cate = "";
+	var cate = "안내";
 	
 		sCate.addEventListener("change", function(){
 			
@@ -150,11 +170,21 @@
 
 	const fileUl = document.querySelector(".fileUl")
 	
+	function modalHide() {
+			$("#checkModal").modal("hide")
+		}
+	
 	document.querySelector(".modalRegisterBtn").addEventListener("click", function(e) {
 		
 		const title = document.querySelector("input[name='title']").value
 		const writer = document.querySelector("input[name='writer']").value
 		const content = document.querySelector("textarea[name='content']").value
+		
+		const showed = document.querySelector("input[name='showed']")
+		console.log(showed.getAttribute("checked"))
+		
+		console.log(check)
+		
 		
 		const arr = []
 		
@@ -175,20 +205,39 @@
 		
 		const obj = {title:title, category:cate, writer:writer, content:content, list:arr}
 		
-		service.register(obj,csrfTokenValue).then(result => document.querySelector(".checkModalBody").innerHTML += "<p>"+result+"<p>");
+		service.register(obj,csrfTokenValue).then(result => 
+		{
+			console.dir(result)
+		if(result[0]){
+			
+			document.querySelector(".checkModalBody").innerHTML = "<p>"+result[0].defaultMessage+"</p>"
+			
+			$("#registerModal").modal("hide")
+			
+			 $("#checkModal").modal("show")
+			
+			document.querySelector(".checkBtn").setAttribute("onclick", "modalHide()")
+			
+		}else{
+			
+		document.querySelector(".checkModalBody").innerHTML = "<p>등록완료</p>"
 		
-		 $("#registerModal").modal("hide")
+		document.querySelector(".checkBtn").setAttribute("onclick", 'location.href="/admin/notice/list"')
+		
+		$("#registerModal").modal("hide")
 		
 		$("#checkModal").modal("show")
+		}
+		})
 		
 	}, false)
 	
 	
-	document.querySelector(".checkBtn").addEventListener("click", function(e){
+/* 	document.querySelector(".checkBtn").addEventListener("click", function(e){
 		
 		location.href="/admin/notice/list"
 		
-	},false)
+	},false) */
 	
 	
 	document.querySelector("input[name='files']").addEventListener("change", function(e){

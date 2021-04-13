@@ -21,7 +21,7 @@ public class Notice {
 	private String title;
 	private String content;
 	private String writer;
-	private Boolean show;
+	private Boolean showed;
 	private String category;
 	private boolean img;
 	private boolean file;

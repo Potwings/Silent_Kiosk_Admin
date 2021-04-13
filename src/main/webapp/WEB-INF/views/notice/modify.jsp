@@ -29,9 +29,11 @@
 								</div>
 								<div class="col-md-3">
 									<div class="form-group bmd-form-group">
-										<label class="bmd-label-floating">카테고리</label> <input
-											type="text" name="category" class="form-control"
-											value="${notice.category}">
+										 <select  style='width:px;' class="selectCate custom-select">
+				                     		<option ${notice.category == "안내"? "selected" :"" } value="안내">안내</option>
+				                      	 	<option ${notice.category == "긴급"? "selected" :"" } value="긴급">긴급</option>
+				                        	<option ${notice.category == "이벤트"? "selected" :"" } value="이벤트">이벤트</option>
+			                         	 </select>
 									</div>
 								</div>
 							</div>
@@ -58,8 +60,7 @@
 							</div>
 							<div class="btnContainer">
 								<button class="btn btn-primary btn-round modifyBtn">수정</button>
-								<button class="btn btn-primary btn-round cancelBtn">수정
-									취소</button>
+								<button class="btn btn-primary btn-round cancelBtn">수정 취소</button>
 							</div>
 						</form>
 					</div>
@@ -136,12 +137,12 @@
    }, false)
    
    const arr = []
+
+   var category = ""
    
    document.querySelector(".modalModifyBtn").addEventListener("click", function(e) {
 	   
       const title = document.querySelector("input[name='title']").value
-      
-      const category = document.querySelector("input[name='category']").value
       
       const writer = document.querySelector("input[name='writer']").value
       
@@ -154,6 +155,16 @@
       $("#checkModal").modal("show")
       
    }, false)
+   
+   const sCate =  document.querySelector(".selectCate")
+   
+  sCate.addEventListener("change",function(){
+	   
+	   const cateIdx = sCate.selectedIndex
+	   
+	   category = sCate[cateIdx].value
+	   
+   },false)
    
    document.querySelector(".checkBtn").addEventListener("click", function(e){
 	   

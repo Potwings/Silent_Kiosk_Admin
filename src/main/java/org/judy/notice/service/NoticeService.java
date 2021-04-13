@@ -11,6 +11,8 @@ public interface NoticeService {
 
 	List<NoticeDTO> getList(PageDTO pageDTO);
 	
+	List<NoticeDTO> topList();
+	
 	NoticeDTO getOne(Integer nno);
 	
 	void insert(NoticeDTO dto);
@@ -35,7 +37,7 @@ public interface NoticeService {
 		dto.setWriter(vo.getWriter());
 		dto.setRegdate(vo.getRegdate());
 		dto.setUpdatedate(vo.getUpdatedate());
-		dto.setShow(vo.getShow());
+		dto.setShowed(vo.getShowed());
 		dto.setCategory(vo.getCategory());
 		dto.setImg(vo.isImg());
 		dto.setFile(vo.isFile());
@@ -53,7 +55,7 @@ public interface NoticeService {
 				.writer(dto.getWriter())
 				.regdate(dto.getRegdate())
 				.updatedate(dto.getUpdatedate())
-				.show(dto.getShow())
+				.showed(dto.getShowed())
 				.category(dto.getCategory())
 				.img(dto.isImg())
 				.file(dto.isFile())

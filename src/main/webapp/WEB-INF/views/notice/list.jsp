@@ -36,7 +36,7 @@
 							</div>
 
 							<div class="selectPerSheet">
-								<select class="selectPerSheet custom-select">
+								<select class="sPerSheet custom-select">
 									<option ${10 == pageDTO.perSheet ? "selected" : "" } value="10">10개씩</option>
 									<option ${20 == pageDTO.perSheet ? "selected" : "" } value="20">20개씩</option>
 									<option ${30 == pageDTO.perSheet ? "selected" : "" } value="30">30개씩</option>
@@ -57,6 +57,17 @@
 									<th>수정일자</th>
 								</thead>
 								<tbody class="tList">
+								<c:forEach items="${topList }" var="top">
+								<tr data-nno="${top.nno }" class="table-warning">
+								<td>${top.nno }</td>
+								<td><c:if test="${top.img}"><img src="/admin/common/notice/thumb?nno=${top.nno}"></c:if></td>
+								<td>${top.title}<c:if test="${top.file}">&nbsp;<i class="fas fa-paperclip"></i></c:if></td>
+								<td>${top.category}</td>
+								<td>${top.writer }</td>
+								<td>${top.regdate }</td>
+								<td>${top.updatedate }</td>
+								</tr>
+								</c:forEach>
 								<c:forEach items="${list}" var="notice" >
 								<tr data-nno="${notice.nno }">
 								<td>${notice.nno }</td>
@@ -114,7 +125,7 @@
 <script>
  const actionForm = document.querySelector(".actionForm")
 
- const ul =  document.querySelector(".tList")
+ const tlist =  document.querySelector(".tList")
   
  const pUl = document.querySelector(".pagination")
 
@@ -141,11 +152,12 @@ pUl.addEventListener("click",function(e){
   
   
   
-const sPerSheet = document.querySelector(".selectPerSheet")
+const sPerSheet = document.querySelector(".sPerSheet")
   
 sPerSheet.addEventListener("change", function(e){
 	  
   const idx = sPerSheet.selectedIndex
+  console.log(idx)
 		
   const perSheet = sPerSheet[idx].value
   
@@ -203,7 +215,7 @@ document.querySelector(".searchBtn").addEventListener("click", function(e){
 }, false)
 
 
-document.querySelector(".tList").addEventListener("click", function(e){
+tlist.addEventListener("click", function(e){
 	
 	const nno = e.target.parentNode.getAttribute("data-nno")
 	

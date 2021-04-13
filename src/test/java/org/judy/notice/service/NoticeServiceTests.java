@@ -34,6 +34,11 @@ public class NoticeServiceTests {
 	}
 	
 	@Test
+	public void testTopList() {
+		log.info(service.topList());
+	}
+	
+	@Test
 	public void testOne() {
 		
 		log.info(service.getOne(20));

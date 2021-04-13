@@ -39,6 +39,12 @@
 		order by nno desc limit #{skip}, #{perSheet}
 		]]>
 	</select>
+	
+	<select id="topList" resultType="org.judy.notice.domain.Notice">
+		<![CDATA[
+		select * from tbl_notice where showed = 1 order by nno desc
+		]]>
+	</select>
 
 	<select id="getOne" resultType="org.judy.notice.domain.Notice">
 		<![CDATA[
@@ -63,8 +69,8 @@
 			]]>
 		</selectKey>
 		<![CDATA[
-		insert into tbl_notice (nno,title,content,writer,category,img,file)
-		values(#{nno},#{title},#{content},#{writer},#{category},#{img},#{file})
+		insert into tbl_notice (nno,title,content,writer,showed, category,img,file)
+		values(#{nno},#{title},#{content},#{writer},#{showed},#{category},#{img},#{file})
 		]]>
 	</insert>
 
@@ -76,7 +82,7 @@
 	
 	<update id="update">
 		<![CDATA[
-		update tbl_notice set title=#{title}, content=#{content}, category=#{category}, img=#{img}, file=#{file}, updatedate=now() where nno = #{nno};
+		update tbl_notice set title=#{title}, content=#{content}, category=#{category}, img=#{img}, file=#{file}, showed=#{showed}, updatedate=now() where nno = #{nno};
 		]]>
 	</update>
 	

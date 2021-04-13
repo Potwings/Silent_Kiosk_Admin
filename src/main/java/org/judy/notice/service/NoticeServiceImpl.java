@@ -1,5 +1,6 @@
 package org.judy.notice.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -126,6 +127,12 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public NoticeFileDTO getThumb(Integer nno) {
 		return mapper.getThumb(nno);
+	}
+
+	@Override
+	public List<NoticeDTO> topList() {
+
+		return mapper.topList().stream().map(notice -> toDTO(notice)).collect(Collectors.toList());
 	}
 
 }

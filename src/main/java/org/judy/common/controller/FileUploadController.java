@@ -392,7 +392,7 @@ public class FileUploadController {
 	@ResponseBody
 	public ResponseEntity<Resource> downloadFile(String link) {
 
-		String path = "C:\\upload\\temp\\admin\\notice";
+		String path = "C:\\upload\\admin\\notice";
 
 		String str = "";
 

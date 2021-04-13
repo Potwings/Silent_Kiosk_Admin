@@ -10,6 +10,8 @@ public interface NoticeMapper {
 	
 	List<Notice> getList(PageDTO pageDTO);
 	
+	List<Notice> topList();
+	
 	Notice getOne(Integer nno);
 	
 	void insert(Notice vo);
