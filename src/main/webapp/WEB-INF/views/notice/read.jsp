@@ -112,7 +112,7 @@ service.getFiles(${nno}).then(res=>res.json()).then(files => {
 	for(const file of files){
 		
 	if(file.image){
-		str += "<li id='li"+file.uuid+"'>"+file.fileName+"<img style='width:30vw;' src='/admin/common/notice/view?link="+file.link+"'/></li>"
+		str += "<li id='li"+file.uuid+"'>"+file.fileName+"<br><img style='width:30vw;' src='/admin/common/notice/view?link="+file.link+"'/></li>"
 	}else{
 		str += "<li id='li"+file.uuid+"'><a href='/admin/common/notice/download?link="+file.link+"'><i class='fas fa-file'></i></a>"+file.fileName+"</li>" 
 	}

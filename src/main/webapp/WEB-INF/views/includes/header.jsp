@@ -11,6 +11,7 @@ Coded by Creative Tim
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,16 +38,16 @@ The above copyright notice and this permission notice shall be included in all c
 </head>
 
 <body class="">
-  <div class="wrapper ">
+  <div class="wrapper">
     <div class="sidebar" data-color="orange" data-background-color="white">
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
         Tip 2: you can also add an image using data-image tag
     -->
-      <div class="logo"><a href="/admin/notice/list" class="simple-text logo-normal">
-          Creative Tim
-        </a></div>
+      <div class="logo">
+          <a href="/admin/notice/list" class="simple-text logo-normal"><span style="font-family: 'yg-jalnan'; color: #ee6d39; font-size:x-large; ">Silent Kiosk</span></a>
+        </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item  ">
@@ -65,7 +66,17 @@ The above copyright notice and this permission notice shall be included in all c
       </div>
     </div>
     <div class="main-panel">
+    
       <!-- Navbar -->
+      <div style="width: 85vw; margin-top: 10px;">
+      			<form action="/admin/customLogout" method="post">
+      			<input type="hidden" name="_csrf" value="${_csrf.token}">
+  				<button class="btn btn-primary btn-round logoutBtn" style="margin-top:10px; display: grow; grow-direction: center; float: right;">logout</button>
+				</form>
+      			<sec:authentication property="principal" var="pinfo"/>
+      			<p style="margin-top: 18px; float: right; margin-right: 10px;">${pinfo.username}</p>
+      			<i class="fas fa-user-circle fa-2x" style="float: right; margin-top: 12px; margin-right: 10px; color: #757575;"></i>
+      </div>
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,15 +86,6 @@ The above copyright notice and this permission notice shall be included in all c
             <span class="navbar-toggler-icon icon-bar"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end">
-            <form class="navbar-form">
-              <div class="input-group no-border">
-                <input type="text" value="" class="form-control" placeholder="Search...">
-                <button type="submit" class="btn btn-white btn-round btn-just-icon">
-                  <i class="material-icons">search</i>
-                  <div class="ripple-container"></div>
-                </button>
-              </div>
-            </form>
             <ul class="navbar-nav">
               <!-- 
               <li class="nav-item dropdown">

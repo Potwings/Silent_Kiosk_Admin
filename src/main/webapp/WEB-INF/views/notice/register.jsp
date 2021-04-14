@@ -56,9 +56,12 @@
                      <ul class="fileUl">
                      </ul>
                       </div>
-                       <div class="btnContainer">
-                       <p>고정</p>
-                       <input type="checkbox" onclick="checkBox()" name="showed">
+                       <hr/>
+							<div class="btnContainer">
+						   		 <div class="checkbox" style="display: flex; flex-direction: row;">
+		                     	  <h5>공지사항 고정</h5>
+		                     	  <input style="margin-left: 10px; margin-top: 5px;" type="checkbox" class="checkShowed" name="showed" ${notice.showed==true?"checked":"" }>
+		                     	  </div>
 						<button class="btn btn-primary btn-round registerBtn">등록</button>
 						<button class="btn btn-primary btn-round listBtn">등록 취소</button>
 					</div>
@@ -126,24 +129,6 @@
 <script src="/admin/resources/service.js"></script>
 <script>
 
-	let check = '0'
-
-	function checkBox(){
-		
-		if(check=='0'){
-			
-			check = '1'
-			
-		}
-		else if(check=='1')
-		{
-			
-			check = '0'
-			
-		}
-		
-	}
-
 	const csrfTokenValue = "${_csrf.token}"
 
 	const actionForm = document.querySelector(".actionForm")
@@ -162,11 +147,12 @@
 
 	document.querySelector(".registerBtn").addEventListener("click", function(e) {
 
-	e.preventDefault();
+		e.preventDefault();
 		
-	 $("#registerModal").modal("show")
-
-	}, false)
+	 	$("#registerModal").modal("show")
+	 	
+	},false)
+	 	
 
 	const fileUl = document.querySelector(".fileUl")
 	
@@ -179,12 +165,6 @@
 		const title = document.querySelector("input[name='title']").value
 		const writer = document.querySelector("input[name='writer']").value
 		const content = document.querySelector("textarea[name='content']").value
-		
-		const showed = document.querySelector("input[name='showed']")
-		console.log(showed.getAttribute("checked"))
-		
-		console.log(check)
-		
 		
 		const arr = []
 		
@@ -203,7 +183,10 @@
 		
 		}
 		
-		const obj = {title:title, category:cate, writer:writer, content:content, list:arr}
+		const checkShowed = document.querySelector(".checkShowed")
+
+		
+		const obj = {title:title, category:cate, writer:writer, content:content, showed:checkShowed.checked, list:arr}
 		
 		service.register(obj,csrfTokenValue).then(result => 
 		{

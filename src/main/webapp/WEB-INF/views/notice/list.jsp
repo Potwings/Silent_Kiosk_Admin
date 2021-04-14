@@ -10,8 +10,8 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header card-header-primary">
-						<h4 class="card-title">Simple Table</h4>
-						<p class="card-category">Here is a subtitle for this table</p>
+						<h4 class="card-title">공지사항</h4>
+						<p class="card-category"></p>
 
 					</div>
 					<div class="card-body">
@@ -44,25 +44,24 @@
 							</div>
 						</div>
 					
-					
 						<div class="table-responsive">
 							<table class="table">
 								<thead class=" text-primary">
 									<th>번호</th>
+									<th>분류</th>
 									<th>이미지</th>
 									<th>제목</th>
-									<th>분류</th>
 									<th>작성자</th>
 									<th>등록일자</th>
 									<th>수정일자</th>
 								</thead>
 								<tbody class="tList">
 								<c:forEach items="${topList }" var="top">
-								<tr data-nno="${top.nno }" class="table-warning">
+								<tr data-nno="${top.nno }" style="background-color: #f2f2f2;">
 								<td>${top.nno }</td>
-								<td><c:if test="${top.img}"><img src="/admin/common/notice/thumb?nno=${top.nno}"></c:if></td>
-								<td>${top.title}<c:if test="${top.file}">&nbsp;<i class="fas fa-paperclip"></i></c:if></td>
 								<td>${top.category}</td>
+								<td><c:if test="${top.img}"><img src="/admin/common/notice/thumb?nno=${top.nno}" style="width: 100px; height: 50px; object-fit: cover;" ></c:if></td>
+								<td><STRONG><b>${top.title}</b></STRONG><c:if test="${top.file}">&nbsp;<i class="fas fa-paperclip"></i></c:if></td>
 								<td>${top.writer }</td>
 								<td>${top.regdate }</td>
 								<td>${top.updatedate }</td>
@@ -71,9 +70,9 @@
 								<c:forEach items="${list}" var="notice" >
 								<tr data-nno="${notice.nno }">
 								<td>${notice.nno }</td>
-								<td><c:if test="${notice.img}"><img src="/admin/common/notice/thumb?nno=${notice.nno}"></c:if></td>
-								<td>${notice.title}<c:if test="${notice.file}">&nbsp;<i class="fas fa-paperclip"></i></c:if></td>
 								<td>${notice.category}</td>
+								<td><c:if test="${notice.img}"><img src="/admin/common/notice/thumb?nno=${notice.nno}" style="width: 100px; height: 50px; object-fit: cover;" ></c:if></td>
+								<td>${notice.title}<c:if test="${notice.file}">&nbsp;<i class="fas fa-paperclip"></i></c:if></td>
 								<td>${notice.writer }</td>
 								<td>${notice.regdate }</td>
 								<td>${notice.updatedate }</td>

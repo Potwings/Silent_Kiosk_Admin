@@ -58,7 +58,12 @@
 								<ul class="fileUl">
 								</ul>
 							</div>
+							<hr/>
 							<div class="btnContainer">
+						   		 <div class="checkbox" style="display: flex; flex-direction: row;">
+		                     	  <h5>공지사항 고정</h5>
+		                     	  <input style="margin-left: 10px; margin-top: 5px;" type="checkbox" class="checkShowed" name="showed" ${notice.showed==true?"checked":"" }>
+		                     	  </div>
 								<button class="btn btn-primary btn-round modifyBtn">수정</button>
 								<button class="btn btn-primary btn-round cancelBtn">수정 취소</button>
 							</div>
@@ -138,7 +143,7 @@
    
    const arr = []
 
-   var category = ""
+   var category = "${notice.category}"
    
    document.querySelector(".modalModifyBtn").addEventListener("click", function(e) {
 	   
@@ -148,7 +153,9 @@
       
       const content = document.querySelector("textarea[name='content']").value
       
-      const obj = {nno:${notice.nno}, title:title, category:category, writer:writer, content:content , list:arr}
+  	  const checkShowed = document.querySelector(".checkShowed")
+      
+      const obj = {nno:${notice.nno}, title:title, category:category, writer:writer, content:content, showed:checkShowed.checked, list:arr}
       
       service.modify(obj,csrfTokenValue).then(result => document.querySelector(".checkModalBody").innerHTML += "<h3>"+result+"</h3>")
       

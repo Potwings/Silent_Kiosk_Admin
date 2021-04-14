@@ -59,10 +59,8 @@
 										<input type="text" name="_csrf" value="${_csrf.token }"/>
 										<div class="form-group">
 											<div class="custom-control custom-checkbox small">
-												<input type="checkbox" class="custom-control-input"
-													id="customCheck"> <label
-													class="custom-control-label" for="customCheck">Remember
-													Me</label>
+												<input type="checkbox" name="remember-me" class="custom-control-input" id="customCheck">
+													<label class="custom-control-label" for="customCheck">Remember Me</label>
 											</div>
 										</div>
 										<button class="btn btn-primary btn-user btn-block"> Login </button>
