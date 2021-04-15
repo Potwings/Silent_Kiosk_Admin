@@ -41,7 +41,8 @@ public class NoticeServiceTests {
 	@Test
 	public void testOne() {
 		
-		log.info(service.getOne(20));
+		NoticeDTO dto = service.getOne(20);
+		
 	}
 	
 	@Test

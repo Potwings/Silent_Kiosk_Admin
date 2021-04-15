@@ -65,7 +65,7 @@ The above copyright notice and this permission notice shall be included in all c
         </ul>
       </div>
     </div>
-    <div class="main-panel">
+    <div class="main-panel" >
     
       <!-- Navbar -->
       <div style="width: 85vw; margin-top: 10px;">

@@ -1,6 +1,9 @@
 package org.judy.notice.service;
 
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -119,6 +122,7 @@ public class NoticeServiceImpl implements NoticeService {
 				fileMapper.insertFile(file);
 			}
 			;
+
 			mapper.update(toDomain(dto));
 		}
 

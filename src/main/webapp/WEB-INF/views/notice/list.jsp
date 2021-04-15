@@ -74,8 +74,8 @@
 								<td><c:if test="${notice.img}"><img src="/admin/common/notice/thumb?nno=${notice.nno}" style="width: 100px; height: 50px; object-fit: cover;" ></c:if></td>
 								<td>${notice.title}<c:if test="${notice.file}">&nbsp;<i class="fas fa-paperclip"></i></c:if></td>
 								<td>${notice.writer }</td>
-								<td>${notice.regdate }</td>
-								<td>${notice.updatedate }</td>
+								<td>${notice.regdate1 }</td>
+								<td>${notice.updatedate1 }</td>
 								</tr>
 								</c:forEach>
 								</tbody>
