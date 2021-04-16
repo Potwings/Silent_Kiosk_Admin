@@ -18,6 +18,7 @@ import lombok.ToString;
 @ToString
 public class ManagerDTO {
 
+
 	String mid, mpw;
 	
 	String email;

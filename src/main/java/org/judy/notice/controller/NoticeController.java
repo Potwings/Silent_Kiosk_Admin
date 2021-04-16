@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -46,15 +45,8 @@ public class NoticeController {
 
 		PageMaker pageMaker = new PageMaker(pageDTO, service.getTotal(pageDTO));
 
-		List<NoticeDTO> list = service.getList(pageDTO);
-
-		list.forEach(notice -> {
-			notice.setRegdate1(notice.getTimeFormat(notice.getRegdate()));
-			notice.setUpdatedate1(notice.getTimeFormat(notice.getUpdatedate()));
-		});
-
 		model.addAttribute("pageMaker", pageMaker);
-		model.addAttribute("list", list);
+		model.addAttribute("list", service.getList(pageDTO));
 		model.addAttribute("topList", service.topList());
 
 	}
@@ -90,14 +82,14 @@ public class NoticeController {
 		}
 
 		dto.getList().forEach(file -> copyFile(file));
-
+		
 		log.info(bindingResult);
 
-		if (bindingResult.hasErrors()) {
-
+		if(bindingResult.hasErrors()) {
+			
 			return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.OK);
 		}
-
+		
 		service.insert(dto);
 
 		return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.OK);

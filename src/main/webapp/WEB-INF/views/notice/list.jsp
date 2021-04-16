@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="../includes/header.jsp"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <div class="content">
 	<div class="container-fluid">
@@ -57,26 +58,74 @@
 								</thead>
 								<tbody class="tList">
 								<c:forEach items="${topList }" var="top">
-								<tr data-nno="${top.nno }" style="background-color: #f2f2f2;">
-								<td>${top.nno }</td>
-								<td>${top.category}</td>
-								<td><c:if test="${top.img}"><img src="/admin/common/notice/thumb?nno=${top.nno}" style="width: 100px; height: 50px; object-fit: cover;" ></c:if></td>
-								<td><STRONG><b>${top.title}</b></STRONG><c:if test="${top.file}">&nbsp;<i class="fas fa-paperclip"></i></c:if></td>
-								<td>${top.writer }</td>
-								<td>${top.regdate }</td>
-								<td>${top.updatedate }</td>
-								</tr>
+									<tr data-nno="${top.nno }" style="background-color: #f2f2f2;">
+									<td>${top.nno }</td>
+									<td>${top.category}</td>
+									<td><c:if test="${top.img}"><img src="/admin/common/notice/thumb?nno=${top.nno}" style="width: 100px; height: 50px; object-fit: cover;" ></c:if></td>
+									<td><STRONG><b>${top.title}</b></STRONG><c:if test="${top.file}">&nbsp;<i class="fas fa-paperclip"></i></c:if></td>
+									<td>${top.writer }</td>
+										<c:set var="now" value="<%=new java.util.Date()%>" />
+										<fmt:parseNumber value="${now.time}" var="now" integerOnly="true" />
+										<fmt:parseNumber value="${top.regdate.time}" var="reg" integerOnly="true" />
+										<fmt:parseNumber value="${top.updatedate.time}" var="update" integerOnly="true" />
+										<c:set value="${now- reg }" var="regDateDiff"/>
+										<c:set value="${now- update}" var="updateDateDiff"/>
+									<td>
+										 <c:choose>
+											<c:when test="${regDateDiff < 86400000 }">
+												<fmt:formatDate value="${top.regdate }" pattern="HH:mm:ss"/>
+											</c:when>
+											<c:otherwise>
+												<fmt:formatDate value="${top.regdate }" pattern="yyyy-MM-dd"/>
+											</c:otherwise>
+										</c:choose>
+									</td>
+									<td>
+										<c:choose>
+											<c:when test="${updateDateDiff < 86400000 }">
+												<fmt:formatDate value="${top.updatedate }" pattern="HH:mm:ss"/>
+											</c:when>
+											<c:otherwise>
+												<fmt:formatDate value="${top.updatedate }" pattern="yyyy-MM-dd"/>
+											</c:otherwise>
+										</c:choose>
+									</td>
+									</tr>
 								</c:forEach>
+								
+	 
 								<c:forEach items="${list}" var="notice" >
-								<tr data-nno="${notice.nno }">
-								<td>${notice.nno }</td>
-								<td>${notice.category}</td>
-								<td><c:if test="${notice.img}"><img src="/admin/common/notice/thumb?nno=${notice.nno}" style="width: 100px; height: 50px; object-fit: cover;" ></c:if></td>
-								<td>${notice.title}<c:if test="${notice.file}">&nbsp;<i class="fas fa-paperclip"></i></c:if></td>
-								<td>${notice.writer }</td>
-								<td>${notice.regdate1 }</td>
-								<td>${notice.updatedate1 }</td>
-								</tr>
+									<tr data-nno="${notice.nno }">
+									<td>${notice.nno }</td>
+									<td>${notice.category}</td>
+									<td><c:if test="${notice.img}"><img src="/admin/common/notice/thumb?nno=${notice.nno}" style="width: 100px; height: 50px; object-fit: cover;" ></c:if></td>
+									<td>${notice.title}<c:if test="${notice.file}">&nbsp;<i class="fas fa-paperclip"></i></c:if></td>
+									<td>${notice.writer }</td>
+										<fmt:parseNumber value="${notice.regdate.time}" var="nreg" integerOnly="true" />
+										<fmt:parseNumber value="${notice.updatedate.time}" var="nupdate" integerOnly="true" />
+										<c:set value="${now- nreg }" var="nregDateDiff"/>
+										<c:set value="${now- nupdate}" var="nupdateDateDiff"/>
+									<td>
+										 <c:choose>
+											<c:when test="${nregDateDiff < 86400000 }">
+												<fmt:formatDate value="${notice.regdate }" pattern="HH:mm:ss"/>
+											</c:when>
+											<c:otherwise>
+												<fmt:formatDate value="${notice.regdate }" pattern="yyyy-MM-dd"/>
+											</c:otherwise>
+										</c:choose>
+									</td>
+									<td>
+										<c:choose>
+											<c:when test="${nupdateDateDiff < 86400000 }">
+												<fmt:formatDate value="${notice.updatedate }" pattern="HH:mm:ss"/>
+											</c:when>
+											<c:otherwise>
+												<fmt:formatDate value="${notice.updatedate }" pattern="yyyy-MM-dd"/>
+											</c:otherwise>
+										</c:choose>
+									</td>
+									</tr>
 								</c:forEach>
 								</tbody>
 							</table>

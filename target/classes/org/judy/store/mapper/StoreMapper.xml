@@ -10,16 +10,155 @@
   		]]>
 	</select>
 
+	<select id="getStoreOne" resultType="org.judy.store.domain.Store">
+		<![CDATA[
+  		select * from tbl_store where sno = #{sno}
+  		]]>
+	</select>
+
 	<select id="findByMid" resultType="org.judy.store.domain.DocumentFile">
 		<![CDATA[
   		select * from tbl_document where mid = #{mid}
   		]]>
 	</select>
 
+	<insert id="insertStore">
+		<selectKey resultType="Integer" keyProperty="sno" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		<![CDATA[
+  		insert into tbl_store (sno, mid , sname , lat , lng , address , category,logoImg) values (#{sno}, #{mid} , #{sname} , #{lat} , #{lng} , #{address} , #{category},#{logoImg})
+  		]]>
+	</insert>
+	
+	<insert id="insertStoreImg">
+	<![CDATA[
+	insert into tbl_store_img (suuid, sno, suploadPath, sfileName) values(#{suuid},#{sno},#{suploadPath},#{sfileName})
+	]]>
+	</insert>
+
+	<update id="updateStore">
+	update tbl_store set sname= #{sname}, lat = #{lat} , lng=#{lng}, address = #{address}, category = #{category}, logoImg = #{logoImg} where sno = #{sno} 
+	</update>
+	
+	<delete id="delStore">
+		<![CDATA[
+  		delete from tbl_store where sno= #{sno}
+  		]]>
+	</delete>
+
 	<delete id="deleteDoc">
 		<![CDATA[
   		delete from tbl_document where muuid= #{muuid}
   		]]>
 	</delete>
+	
+	<!-- MENU -->
+	
+	<select id="menuSname" resultType="string">
+	<![CDATA[
+	select sname from tbl_store
+	where sno = #{sno}
+	]]>
+	</select>
+	
+	<select id="getMenu" resultType="org.judy.store.domain.Menu">
+		<![CDATA[
+		select * from tbl_store_menu where sno = #{sno} and cno = #{cno}
+		]]>
+	</select>
+	
+	<select id="getOneMenu" resultType="org.judy.store.domain.Menu">
+		<![CDATA[
+		select * from tbl_store_menu where mno = #{mno}
+		]]>
+	</select>
+	
+	<insert id="insertMenu">
+		<selectKey resultType="Integer" keyProperty="mno" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		<![CDATA[
+  		insert into tbl_store_menu (mno , sno , menuName ,content , mprice , mimg , cno	) values (#{mno} , #{sno} ,#{menuName} , #{content} , #{mprice} , #{mimg} , #{cno})
+  		]]>
+	</insert>
+	
+	<delete id="delMenu">
+		<![CDATA[
+  		delete from tbl_store_menu where mno= #{mno}
+  		]]>
+	</delete>
+	
+	<update id="updateMenu">
+		<![CDATA[
+  		update tbl_store_menu set menuName= #{menuName}, content = #{content} , mprice=#{mprice}, mimg = #{mimg}, cno = #{cno} where mno = #{mno}
+  		]]>
+	</update>
+	
+	<!-- TOPPING -->
+	
+	<select id="getTopping" resultType="org.judy.store.domain.Topping">
+		<![CDATA[
+		select * from tbl_store_topping where sno = #{sno}
+		]]>
+	</select>
+	
+	<select id="getOneTopping" resultType="org.judy.store.domain.Topping">
+		<![CDATA[
+		select * from tbl_store_topping where tno = #{tno}
+		]]>
+	</select>
+	
+	<insert id="insertTop">
+		<selectKey resultType="Integer" keyProperty="tno" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		<![CDATA[
+  		insert into tbl_store_topping (tno ,sno , tname , tprice , timg 	) values (#{tno} ,#{sno} ,#{tname} , #{tprice} , #{timg})
+  		]]>
+	</insert>
+
+	<delete id="delTop">
+		<![CDATA[
+  		delete from tbl_store_topping where tno= #{tno}
+  		]]>
+	</delete>
+	
+	<update id="updateTop">
+		<![CDATA[
+  		update tbl_store_topping set tprice= #{tprice}, timg = #{timg} , tname = #{tname}  where tno = #{tno}
+  		]]>
+	</update>
+	
+	<select id="selectedTop" resultType="org.judy.store.domain.Topping">
+		<![CDATA[
+		select tst.sno, tst.tno , tst.tPrice , tst.tImg , tst.tName from tbl_menu_topping tmt
+		left join tbl_store_topping tst on tmt.tno = tst.tno
+		where tmt.mno = #{mno}
+		]]>
+	</select>
+	
+	<select id ="unSelectTop" resultType="org.judy.store.domain.Topping">
+		<![CDATA[
+		select distinct tst.tno , tst.tPrice , tst.tImg , tst.tName from tbl_store_topping tst
+		where sno = #{sno} and (tst.tno , tst.tPrice , tst.tImg , tst.tName ) NOT IN (select tst.tno , tst.tPrice , tst.tImg , tst.tName from tbl_menu_topping tmt
+		left join tbl_store_topping tst on tmt.tno = tst.tno
+		where tmt.mno = #{mno})
+	]]>
+	</select>
+	
+	<delete id="exceptTop">
+		<![CDATA[
+		delete from tbl_menu_topping where tno = #{tno} and mno = #{mno}
+		]]>
+	</delete>
+	
+	<insert id="addTop">
+		<![CDATA[
+		insert into tbl_menu_topping (mno , tno) values (#{mno} , #{tno})
+		]]>
+	</insert>
+	
+	
 
 </mapper>

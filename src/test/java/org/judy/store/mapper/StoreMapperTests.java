@@ -25,10 +25,6 @@ public class StoreMapperTests {
 		log.info(mapper.getStore("user154"));
 	}
 	
-	@Test
-	public void testDoc() {
-		log.info(mapper.findByMid("user154"));
-	}
 
 	@Test
 	public void testDelete() {

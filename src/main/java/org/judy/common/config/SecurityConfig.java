@@ -1,5 +1,6 @@
 package org.judy.common.config;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import org.judy.common.security.CustomLoginSuccessHandler;
@@ -14,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -51,11 +54,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //		.antMatchers("/notice/list").access("hasRole('ROLE_ADMIN')")
 //		.antMatchers("/notice/list").access("hasRole('ROLE_MEMBER')");
 		
+//		RequestMatcher csrfRequestMatcher = new RequestMatcher() {
+//
+//		      private RegexRequestMatcher requestMatcher =
+//		          new RegexRequestMatcher("/admin/store/jusoPopup", null);
+//
+//		      @Override
+//		      public boolean matches(HttpServletRequest request) {
+//
+//		          if(requestMatcher.matches(request)) {
+//		              return true;
+//		          }
+//		          return false;
+//		      }
+//
+//		    }; // new RequestMatcher
+		
 		http.formLogin().loginPage("/sample/customLogin").loginProcessingUrl("/login").successHandler(loginSuccessHandler());
 		
 		http.logout().logoutUrl("/customLogout").invalidateHttpSession(true).deleteCookies("remember-me", "JSESSION_ID");
 		
 		http.rememberMe().key("zerock").tokenRepository(persistentTokenRepository()).tokenValiditySeconds(604800);
+	
 	}
 
 	@Override

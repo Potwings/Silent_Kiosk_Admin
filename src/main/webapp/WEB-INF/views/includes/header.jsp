@@ -62,6 +62,13 @@ The above copyright notice and this permission notice shall be included in all c
               <p>회원관리</p>
             </a>
           </li>
+          <li class="nav-item  ">
+          <sec:authentication property="principal" var="pinfo"/>
+            <a class="nav-link" href="/admin/store/read?mid=${pinfo.username}">
+              <i class="material-icons">content_paste</i>
+              <p>마이페이지</p>
+            </a>
+          </li>
         </ul>
       </div>
     </div>

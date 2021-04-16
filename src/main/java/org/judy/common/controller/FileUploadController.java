@@ -46,6 +46,310 @@ public class FileUploadController {
 
 	private final NoticeService service;
 
+	@GetMapping("/manager/view")
+	public ResponseEntity<byte[]> view(String link) {
+
+		String path = "C:\\upload\\temp\\admin\\manager";
+		
+		return imgView(link, path);
+	}
+	
+	@GetMapping("/menu/view")
+	public ResponseEntity<byte[]> menuView(String link) {
+		log.info("link: "+link);
+		String path = "C:\\upload\\admin\\manager\\MImg\\";
+
+		return imgView(link, path);
+	}
+	
+	@GetMapping("/topping/view")
+	public ResponseEntity<byte[]> toppingView(String link) {
+		log.info("link: "+link);
+		String path = "C:\\upload\\admin\\manager\\tImg\\";
+
+		return imgView(link, path);
+	}
+	
+	@GetMapping("/logo/view")
+	public ResponseEntity<byte[]> logoView(String link) {
+		log.info("link: "+link);
+		String path = "C:\\upload\\admin\\manager\\logoImg\\";
+		
+		return imgView(link, path);
+	}
+
+	@PostMapping(value = "/manager/upload", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<List<ManagerFileDTO>> postUpload(MultipartFile[] files) {
+
+		String path = "C:\\upload\\temp\\admin\\manager";
+
+		List<ManagerFileDTO> fileList = new ArrayList<>();
+
+		for (MultipartFile multipartFile : files) {
+
+			log.info(multipartFile);
+			log.info(multipartFile.getOriginalFilename());
+
+			UUID uuid = UUID.randomUUID();
+
+			String savePath = getFolder();
+
+			File uploadPath = new File(path, getFolder());
+
+			String fileName = uuid.toString() + "_" + multipartFile.getOriginalFilename();
+
+			//String sFileName = "s_" + uuid.toString() + "_" + multipartFile.getOriginalFilename();
+
+			//boolean isImage = multipartFile.getContentType().startsWith("image");
+
+			if (uploadPath.exists() == false) {
+				uploadPath.mkdirs();
+			}
+
+			File saveFile = new File(uploadPath, fileName);
+
+			ManagerFileDTO fileDTO = ManagerFileDTO.builder().fileName(multipartFile.getOriginalFilename())
+					.uploadPath(savePath).uuid(uuid.toString()).build();
+
+			try {
+				multipartFile.transferTo(saveFile);
+
+				/*
+				 * if (isImage) {
+				 * 
+				 * FileOutputStream fos = new FileOutputStream(new File(uploadPath, sFileName));
+				 * 
+				 * Thumbnailator.createThumbnail(multipartFile.getInputStream(), fos, 90, 90);
+				 * 
+				 * fos.close(); }
+				 */
+
+				fileList.add(fileDTO);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} // end for
+
+		return new ResponseEntity<List<ManagerFileDTO>>(fileList, HttpStatus.OK);
+
+	}
+
+	@PostMapping(value = "/manager/doc/upload", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<List<ManagerFileDTO>> postDocUpload(MultipartFile[] files, String value) {
+
+		String path = "C:\\upload\\temp\\admin\\manager";
+		
+			
+		List<ManagerFileDTO> fileList = new ArrayList<>();
+
+		for (MultipartFile multipartFile : files) {
+
+			log.info(multipartFile);
+			log.info(multipartFile.getOriginalFilename());
+
+			UUID uuid = UUID.randomUUID();
+
+			String savePath = getFolder();
+
+			File uploadPath = new File(path, getFolder());
+
+			String fileName = value+"_"+uuid.toString() + "_" + multipartFile.getOriginalFilename();
+
+			//String sFileName = "s_" + uuid.toString() + "_" + multipartFile.getOriginalFilename();
+
+			boolean isImage = multipartFile.getContentType().startsWith("image");
+
+			if (uploadPath.exists() == false) {
+				uploadPath.mkdirs();
+			}
+
+			File saveFile = new File(uploadPath, fileName);
+
+			ManagerFileDTO fileDTO = ManagerFileDTO.builder().fileName(fileName)
+					.uploadPath(savePath).uuid(uuid.toString()).image(isImage).build();
+
+			try {
+				multipartFile.transferTo(saveFile);
+
+				/*
+				 * if (isImage) {
+				 * 
+				 * FileOutputStream fos = new FileOutputStream(new File(uploadPath, sFileName));
+				 * 
+				 * Thumbnailator.createThumbnail(multipartFile.getInputStream(), fos, 90, 90);
+				 * 
+				 * fos.close(); }
+				 */
+
+				fileList.add(fileDTO);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} // end for
+
+		return new ResponseEntity<List<ManagerFileDTO>>(fileList, HttpStatus.OK);
+
+	}
+	
+	@GetMapping(value = "/manager/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	@ResponseBody
+	public ResponseEntity<Resource> downloadDoc(String link) {
+
+		log.info("download file: " + link);
+
+		String path = "C:\\upload\\temp\\admin\\manager";
+
+		String str = "";
+
+		File targetFile = encoding(link, path);
+
+		log.info(targetFile);
+
+		Resource resource = new FileSystemResource(targetFile);
+
+		log.info("resource : " + resource);
+
+		String resourceName = resource.getFilename();
+
+		log.info(resourceName);
+
+		HttpHeaders headers = new HttpHeaders();
+
+		try {
+			headers.add("Content-Disposition",
+					"attachment; filename=" + new String(resourceName.getBytes("UTF-8"), "ISO-8859-1"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
+	}
+
+	// deleteFile
+
+	@PostMapping(value = "/manager/delete")
+	@ResponseBody
+	public ResponseEntity<String> delFile(@RequestBody String link) {
+
+		log.info("delete.................");
+		String[] data = link.split("/");
+
+		// uuid split
+		
+		log.info(data[1]);
+
+		String[] muuidArray = data[1].split("_", 2);
+
+		String muuid = muuidArray[0];
+
+		log.info(muuid);
+		
+		String path = "C:\\upload\\temp\\admin\\manager";
+
+		File file = encoding(link, path);
+
+		log.info(link);
+		
+		file.delete();
+
+		storeService.deleteDoc(muuid);
+
+		return new ResponseEntity<String>("success", HttpStatus.OK);
+
+	}
+	
+	// storeUpload
+	@PostMapping("/store/upload")
+	   public ResponseEntity<List<ManagerFileDTO>> storeUpload(MultipartFile[] uploadFile) {
+
+	      String path = "C:\\upload\\temp\\admin\\manager";
+
+	      log.info("upload------------------");
+
+	      List<ManagerFileDTO> fileList = new ArrayList<>();
+
+	      for (MultipartFile multipartFile : uploadFile) {
+
+	         log.info("---------------------------");
+	         log.info("upload file name: " + multipartFile.getOriginalFilename());
+	         log.info("upload file size: " + multipartFile.getSize());
+
+	         String folderPath = getFolder();
+
+	         File uploadPath = new File(path, folderPath);
+
+	         if (uploadPath.exists() == false) {
+
+	            uploadPath.mkdirs();
+	         }
+
+	         UUID uuid = UUID.randomUUID();
+
+	         String fileName = multipartFile.getOriginalFilename();
+
+	         File saveFile = new File(uploadPath, uuid.toString() + "_" + fileName);
+
+	         log.info(saveFile);
+	         boolean isImage = multipartFile.getContentType().startsWith("image");
+
+	         try {
+
+	            
+	               File sFile = new File(uploadPath, "s_" + uuid.toString() + "_" + fileName);
+	               FileOutputStream fos = new FileOutputStream(sFile);
+	               Thumbnailator.createThumbnail(multipartFile.getInputStream(), fos, 100, 100);
+
+	            
+	            ManagerFileDTO managerFile = new ManagerFileDTO(folderPath, uuid.toString(), fileName, isImage);
+
+	            fileList.add(managerFile);
+
+	            multipartFile.transferTo(saveFile);
+	         } catch (Exception e) {
+	            e.printStackTrace();
+	         }
+
+	      } // end for
+
+	      return new ResponseEntity<>(fileList, HttpStatus.OK);
+	   }
+	
+	// storeView
+	@GetMapping("/store/view")
+	   @ResponseBody
+	   public ResponseEntity<byte[]> getStoreView(String link) {
+
+		   log.info("view.....................");
+		   log.info("Link:" + link);
+		   
+	      String path = "C:\\upload\\temp\\admin\\manager";
+
+	      ResponseEntity<byte[]> result = null;
+
+	      try {
+	         File targetFile = encoding(link,path);
+	         
+	         HttpHeaders header = new HttpHeaders();
+
+	         header.add("Content-Type", Files.probeContentType(targetFile.toPath()));
+
+	         result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(targetFile), header, HttpStatus.OK);
+
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      }
+
+	      return result;
+	   }
+	
+	
+	
+	// ====================================================================================================================
+	// notice
 	@GetMapping("/notice/thumb")
 	public ResponseEntity<byte[]> getThumb(Integer nno) {
 
@@ -129,7 +433,7 @@ public class FileUploadController {
 
 		String path = "C:\\upload\\admin\\notice";
 
-		return getView(path,link);
+		return imgView(path,link);
 	}
 
 	@GetMapping("/notice/preview")
@@ -141,197 +445,11 @@ public class FileUploadController {
 
 		String path = "C:\\upload\\temp\\admin\\notice";
 
-		return getView(path, link);
+		return imgView(path, link);
 	}
 
-	@GetMapping("/manager/view")
-	public ResponseEntity<byte[]> view(String link) {
+	
 
-		String path = "C:\\upload\\temp\\admin\\manager";
-
-		return getView(path,link);
-	}
-
-	@PostMapping(value = "/manager/upload", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<List<ManagerFileDTO>> postUpload(MultipartFile[] files) {
-
-		String path = "C:\\upload\\temp\\admin\\manager";
-
-		List<ManagerFileDTO> fileList = new ArrayList<>();
-
-		for (MultipartFile multipartFile : files) {
-
-			log.info(multipartFile);
-			log.info(multipartFile.getOriginalFilename());
-
-			UUID uuid = UUID.randomUUID();
-
-			String savePath = getFolder();
-
-			File uploadPath = new File(path, getFolder());
-
-			String fileName = uuid.toString() + "_" + multipartFile.getOriginalFilename();
-
-			String sFileName = "s_" + uuid.toString() + "_" + multipartFile.getOriginalFilename();
-
-			boolean isImage = multipartFile.getContentType().startsWith("image");
-
-			if (uploadPath.exists() == false) {
-				uploadPath.mkdirs();
-			}
-
-			File saveFile = new File(uploadPath, fileName);
-
-			ManagerFileDTO fileDTO = ManagerFileDTO.builder().fileName(multipartFile.getOriginalFilename())
-					.uploadPath(savePath).uuid(uuid.toString()).image(isImage).build();
-
-			try {
-				multipartFile.transferTo(saveFile);
-
-				if (isImage) {
-
-					FileOutputStream fos = new FileOutputStream(new File(uploadPath, sFileName));
-
-					Thumbnailator.createThumbnail(multipartFile.getInputStream(), fos, 90, 90);
-
-					fos.close();
-				}
-
-				fileList.add(fileDTO);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		} // end for
-
-		return new ResponseEntity<List<ManagerFileDTO>>(fileList, HttpStatus.OK);
-
-	}
-
-	@PostMapping(value = "/manager/doc/upload", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<List<ManagerFileDTO>> postDocUpload(MultipartFile[] files, String value) {
-
-		String path = "C:\\upload\\temp\\admin\\manager";
-
-		List<ManagerFileDTO> fileList = new ArrayList<>();
-
-		for (MultipartFile multipartFile : files) {
-
-			log.info(multipartFile);
-			log.info(multipartFile.getOriginalFilename());
-
-			UUID uuid = UUID.randomUUID();
-
-			String savePath = getFolder();
-
-			File uploadPath = new File(path, getFolder());
-
-			String fileName = value + "_" + uuid.toString() + "_" + multipartFile.getOriginalFilename();
-
-			String sFileName = "s_" + uuid.toString() + "_" + multipartFile.getOriginalFilename();
-
-			boolean isImage = multipartFile.getContentType().startsWith("image");
-
-			if (uploadPath.exists() == false) {
-				uploadPath.mkdirs();
-			}
-
-			File saveFile = new File(uploadPath, fileName);
-
-			ManagerFileDTO fileDTO = ManagerFileDTO.builder().fileName(fileName).uploadPath(savePath)
-					.uuid(uuid.toString()).image(isImage).build();
-
-			try {
-				multipartFile.transferTo(saveFile);
-
-				if (isImage) {
-
-					FileOutputStream fos = new FileOutputStream(new File(uploadPath, sFileName));
-
-					Thumbnailator.createThumbnail(multipartFile.getInputStream(), fos, 90, 90);
-
-					fos.close();
-				}
-
-				fileList.add(fileDTO);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		} // end for
-
-		return new ResponseEntity<List<ManagerFileDTO>>(fileList, HttpStatus.OK);
-
-	}
-
-	@GetMapping(value = "/manager/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	@ResponseBody
-	public ResponseEntity<Resource> downloadDoc(String link) {
-
-		log.info("download file: " + link);
-
-		String path = "C:\\upload\\temp\\admin\\manager";
-
-		File targetFile = encoding(link, path);
-
-		log.info(targetFile);
-
-		Resource resource = new FileSystemResource(targetFile);
-
-		log.info("resource : " + resource);
-
-		String resourceName = resource.getFilename();
-
-		log.info(resourceName);
-
-		HttpHeaders headers = new HttpHeaders();
-
-		try {
-			headers.add("Content-Disposition",
-					"attachment; filename=" + new String(resourceName.getBytes("UTF-8"), "ISO-8859-1"));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-
-		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
-	}
-
-	// deleteFile
-
-	@PostMapping(value = "/manager/delete")
-	@ResponseBody
-	public ResponseEntity<String> delFile(@RequestBody String link) {
-
-		log.info("delete.................");
-		String[] data = link.split("/");
-
-		// uuid split
-
-		log.info(data[1]);
-
-		String[] muuidArray = data[1].split("_", 2);
-
-		String muuid = muuidArray[0];
-
-		log.info(muuid);
-
-		String path = "C:\\upload\\temp\\admin\\manager";
-
-		File file = encoding(link, path);
-
-		log.info(link);
-
-		file.delete();
-
-		storeService.deleteDoc(muuid);
-
-		return new ResponseEntity<String>("success", HttpStatus.OK);
-	}
-
-	// ====================================================================================================================
-	// notice
 
 	@PostMapping("/notice/upload")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -450,7 +568,7 @@ public class FileUploadController {
 		return viewFile;
 	}
 	
-	private ResponseEntity<byte[]> getView(String path,String link) {
+	private ResponseEntity<byte[]> imgView(String path,String link) {
 
 		ResponseEntity<byte[]> result = null;
 
@@ -461,7 +579,6 @@ public class FileUploadController {
 			header.add("Content-Type", Files.probeContentType(targetFile.toPath()));
 			result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(targetFile), header, HttpStatus.OK);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

@@ -59,8 +59,7 @@ var service = (function() {
 	}
 	
 	
-
-     function sendUpload(fd,csrfTokenValue){
+    function sendUpload(fd,csrfTokenValue){
       return fetch("/admin/common/manager/doc/upload",{
          method : 'post',
          headers : {'X-CSRF-TOKEN': csrfTokenValue},
@@ -68,29 +67,43 @@ var service = (function() {
       }).then(res => res.json())
    }
    
-   function sendUploadThumb(fd,csrfTokenValue){
+   function sendUploadThumb(fd){
    
    	sendUpload(fd).then(result => {
       for (var i = 0; i < result.length; i++) {
          let file = result[i]
          console.log(file.link)
-      document.querySelector(".fileThumb").innerHTML = "<img src='/admin/common/manager/view?link="+file.thumbLink+"' style = 'width: 90px; height: 90px' />" +
-                                           "<button onclick=sendRemove("+JSON.stringify(file)+")'>DEL</button>"
-         
+         document.querySelector(".modal-img").setAttribute("src" , "/admin/common/manager/view?link="+file.link+"")         
       }
    })
    }
        
-    function sendRegister(obj){
-		return fetch("/admin/manager/register" , {
+    function sendRegister(obj, path, csrfTokenValue){
+		return fetch(path , {
 			method : 'post',
 			headers : {"Content-Type":"application/json",
-					'X-CSRF-TOKEN': csrfTokenValue},
+			'X-CSRF-TOKEN': csrfTokenValue},
 			body : JSON.stringify(obj)
 		}).then(res => res.text())
 	}   
+	
+	function storeUpload(formdata, csrfTokenValue){
+	
+		return fetch("/admin/common/store/upload",{
+				method : 'post',
+				headers : {'X-CSRF-TOKEN': csrfTokenValue},
+				body : formdata
+		}).then(res => res.json())
+	}
+	
+	function getAjax(path){
+		return fetch(path, {
+					method : 'get'
+				})
+				
+		}
+	
        
-       
-        return {deleteNotice:deleteNotice, register:register, upload:upload , modify:modify, fileDelete:fileDelete, getFiles:getFiles,sendUpload:sendUpload, sendUploadThumb:sendUploadThumb , sendRegister:sendRegister}
+        return {getAjax:getAjax, storeUpload:storeUpload, deleteNotice:deleteNotice, register:register, upload:upload , modify:modify, fileDelete:fileDelete, getFiles:getFiles,sendUpload:sendUpload, sendUploadThumb:sendUploadThumb , sendRegister:sendRegister}
 
     }())
