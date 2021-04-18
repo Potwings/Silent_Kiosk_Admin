@@ -14,7 +14,6 @@ import org.judy.common.util.PageDTO;
 import org.judy.common.util.PageMaker;
 import org.judy.notice.dto.NoticeDTO;
 import org.judy.notice.service.NoticeService;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,7 +51,7 @@ public class NoticeController {
 
 	@GetMapping("/read")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MEMBER','ROLE_ADV')")
-	public void getOne(@ModelAttribute("nno") Integer nno, PageDTO pageDTO, Model model) {
+	public void getOne(Integer nno, PageDTO pageDTO, Model model) {
 
 		model.addAttribute("notice", service.getOne(nno));
 	}
@@ -82,14 +80,14 @@ public class NoticeController {
 		}
 
 		dto.getList().forEach(file -> copyFile(file));
-		
+
 		log.info(bindingResult);
 
-		if(bindingResult.hasErrors()) {
-			
+		if (bindingResult.hasErrors()) {
+
 			return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.OK);
 		}
-		
+
 		service.insert(dto);
 
 		return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.OK);
@@ -98,7 +96,7 @@ public class NoticeController {
 
 	@GetMapping("/modify")
 	@PreAuthorize("principal.username == #writer")
-	public void getModify(@ModelAttribute("nno") Integer nno, Model model, PageDTO pageDTO, String writer) {
+	public void getModify(Integer nno, Model model, PageDTO pageDTO, String writer) {
 
 		model.addAttribute("notice", service.getOne(nno));
 
@@ -106,11 +104,9 @@ public class NoticeController {
 
 	@PostMapping("/modify")
 	@PreAuthorize("principal.username == #dto.writer")
-	public ResponseEntity<String> modify(@RequestBody NoticeDTO dto) {
+	public ResponseEntity<Object> modify(@RequestBody @Valid NoticeDTO dto, BindingResult bindingResult) {
 
 		log.info("dto: " + dto);
-
-		service.update(dto);
 
 		String path = "C:\\upload\\admin\\notice\\" + getFolder();
 
@@ -121,11 +117,16 @@ public class NoticeController {
 		}
 
 		dto.getList().forEach(file -> copyFile(file));
+		
+		if (bindingResult.hasErrors()) {
 
-		HttpHeaders resHeaders = new HttpHeaders();
-		resHeaders.add("Content-Type", "application/json;charset=UTF-8");
+			return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.OK);
+		}
 
-		return new ResponseEntity<String>("수정하였습니다.", resHeaders, HttpStatus.OK);
+		service.update(dto);
+
+		return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.OK);
+
 	}
 
 	@PostMapping("/delete")
