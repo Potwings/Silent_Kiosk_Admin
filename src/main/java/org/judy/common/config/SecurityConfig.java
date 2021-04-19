@@ -108,7 +108,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       
       String queryUser = "select mid,mpw,enabled from tbl_manager where mid = ?";
       
-      String queryDetails = "select mid,auth from tbl_authtest where  mid =?";
+      String queryDetails = "select mid,auth from tbl_auth where  mid =?";
       
       auth.jdbcAuthentication()
       .dataSource(dataSource)

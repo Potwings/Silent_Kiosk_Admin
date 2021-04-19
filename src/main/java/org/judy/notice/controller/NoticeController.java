@@ -117,7 +117,7 @@ public class NoticeController {
 		}
 
 		dto.getList().forEach(file -> copyFile(file));
-		
+
 		if (bindingResult.hasErrors()) {
 
 			return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.OK);
@@ -175,6 +175,7 @@ public class NoticeController {
 
 		File tempFile = new File("C:\\upload\\temp\\admin\\notice\\" + originalFile);
 		try {
+			if(tempFile.exists()) {
 			FileInputStream inputStream = new FileInputStream(tempFile);
 			byte[] buffer = new byte[inputStream.available()];
 			inputStream.read(buffer);
@@ -185,6 +186,7 @@ public class NoticeController {
 
 			outStream.close();
 			inputStream.close();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

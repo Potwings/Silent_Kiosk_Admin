@@ -63,8 +63,8 @@
 								<tr data-nno="${top.nno }" style="background-color: #f2f2f2;">
 									<td>${top.nno }</td>
 									<td>${top.category}</td>
-									<td><c:if test="${top.img}"><img src="/admin/common/notice/thumb?nno=${top.nno}" style="width: 100px; height: 50px; object-fit: cover;" ></c:if></td>
-									<td><STRONG data-nno="${top.nno }"><b>${top.title}</b></STRONG><c:if test="${top.file}">&nbsp;<i class="fas fa-paperclip"></i></c:if></td>
+									<td data-nno="${top.nno}"><c:if test="${top.img}"><img src="/admin/common/notice/thumb?nno=${top.nno}" style="width: 100px; height: 50px; object-fit: cover;" ></c:if></td>
+									<td><STRONG data-nno="${top.nno}"><b>${top.title}</b></STRONG><c:if test="${top.file}">&nbsp;<i class="fas fa-paperclip"></i></c:if></td>
 									<td>${top.writer }</td>
 										<c:set var="now" value="<%=new java.util.Date()%>" />
 										<fmt:parseNumber value="${now.time}" var="now" integerOnly="true" />
@@ -100,7 +100,7 @@
 									<tr data-nno="${notice.nno }">
 									<td>${notice.nno }</td>
 									<td>${notice.category}</td>
-									<td><c:if test="${notice.img}"><img src="/admin/common/notice/thumb?nno=${notice.nno}" style="width: 100px; height: 50px; object-fit: cover;" ></c:if></td>
+									<td data-nno="${notice.nno }"><c:if test="${notice.img}"><img src="/admin/common/notice/thumb?nno=${notice.nno}" style="width: 100px; height: 50px; object-fit: cover;" ></c:if></td>
 									<td>${notice.title}<c:if test="${notice.file}">&nbsp;<i class="fas fa-paperclip"></i></c:if></td>
 									<td>${notice.writer }</td>
 										<fmt:parseNumber value="${notice.regdate.time}" var="nreg" integerOnly="true" />
