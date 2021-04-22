@@ -43,7 +43,7 @@
 		= #{userid}
 	</select>
 	<select id="managerRead" resultMap="managerMap">
-		select distinct tm.mid,ts.sno, tm.approval, ta.auth from tbl_manager tm
+		select distinct tm.mid,tm.mpw ,ts.sno, tm.approval, ta.auth from tbl_manager tm
 		left join tbl_store ts on tm.mid = ts.mid
 		left join tbl_auth ta on tm.mid = ta.mid
 		where tm.mid = #{mid}

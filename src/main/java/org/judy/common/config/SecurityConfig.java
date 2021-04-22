@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import org.judy.common.security.CustomLoginSuccessHandler;
-import org.judy.common.security.Filtertest;
 import org.judy.common.security.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,10 +17,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
@@ -57,21 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    public UserDetailsService customUserService() {
 	   return new CustomUserDetailsService();
    }
-   
-   @Bean
-
-   public Filtertest filterTest() throws Exception {
-
-      Filtertest authenticationFilterAnotherParam = new Filtertest();
-
-       authenticationFilterAnotherParam.setAuthenticationManager(this.authenticationManagerBean());
-
-       authenticationFilterAnotherParam.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login","POST"));
-
-       return authenticationFilterAnotherParam;
-
-   }
-   
 
    @Override
    protected void configure(HttpSecurity http) throws Exception {
@@ -102,9 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       http.logout().logoutUrl("/customLogout").invalidateHttpSession(true).deleteCookies("remember-me", "JSESSION_ID");
       
       http.rememberMe().key("judy").tokenRepository(persistentTokenRepository()).tokenValiditySeconds(604800);
-      
-      http.addFilterBefore(filterTest(),UsernamePasswordAuthenticationFilter.class);
-      
+            
       http.csrf().requireCsrfProtectionMatcher(new RequestMatcher() {
 
            private Pattern allowedMethods = Pattern.compile("^(GET|HEAD|TRACE|OPTIONS)$");
