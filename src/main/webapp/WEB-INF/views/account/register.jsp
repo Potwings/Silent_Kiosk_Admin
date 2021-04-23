@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ include file="../includes/header.jsp"%>
+<%@ include file="../includes/header2.jsp"%>
 
 
 <div class="regModal modal" tabindex="-1">
@@ -193,11 +193,11 @@
             e.preventDefault()
             const fd = new FormData()
             const files = e.target.files
+            console.log(files)
             fd.append("files", files[0])
             fd.append("value", e.target.name)
             service.sendUpload(fd, csrfTokenValue).then(result => {
-                console.dir(result[0])
-                e.target.setAttribute("data-fileName", result[0].fileName)
+                e.target.setAttribute("data-fileName", result[0].sfileName)
             })
 
         })

@@ -1,13 +1,10 @@
 package org.judy.manager.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.http.HttpRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +18,6 @@ import org.judy.store.service.StoreService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -141,10 +137,6 @@ public class ManagerController {
 		return new ResponseEntity<String>("sccuss", HttpStatus.OK);
 	}
 	
-	@GetMapping("/register")
-	public void getRegister() {
-		
-	}
 	
 	@PostMapping("/register")
 	public ResponseEntity<String> postRegister(@RequestBody ManagerDTO dto) {

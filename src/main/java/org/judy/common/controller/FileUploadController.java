@@ -88,7 +88,6 @@ public class FileUploadController {
 	
 
 	@PostMapping(value = "/manager/upload", produces = { MediaType.APPLICATION_JSON_VALUE })
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<ManagerFileDTO>> postUpload(MultipartFile[] files) {
 
 		String path = "C:\\upload\\temp\\admin\\manager";
@@ -147,7 +146,6 @@ public class FileUploadController {
 	}
 
 	@PostMapping(value = "/manager/doc/upload", produces = { MediaType.APPLICATION_JSON_VALUE })
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<ManagerFileDTO>> postDocUpload(MultipartFile[] files, String value) {
 
 		String path = "C:\\upload\\temp\\admin\\manager";
@@ -276,7 +274,7 @@ public class FileUploadController {
 	
 	// storeUpload
 	@PostMapping("/store/upload")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_MANAGER')")
 	   public ResponseEntity<List<ManagerFileDTO>> storeUpload(MultipartFile[] uploadFile) {
 
 	      String path = "C:\\upload\\temp\\admin\\manager";

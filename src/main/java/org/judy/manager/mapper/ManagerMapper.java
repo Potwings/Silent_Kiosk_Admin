@@ -27,4 +27,6 @@ public interface ManagerMapper {
 	
 	public void updateMan(Manager manager);
 	
+	public void insertAuth(String mid);
+	
 }

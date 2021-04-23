@@ -6,66 +6,75 @@
 
 
 
-<sql id="search" >
+	<sql id="search">
 		<if test="type != null and arr != null">
-		
-		 and
-  		<foreach collection="arr" item="item" separator="or" open="(" close=")">
-  		
-  		<if test="item == 'm'.toString()">
+
+			and
+			<foreach collection="arr" item="item" separator="or" open="("
+				close=")">
+
+				<if test="item == 'm'.toString()">
   		<![CDATA[
   			mid like concat ('%' , #{keyword} , '%')
-  			]]> 
-  		</if>
-  		<if test="item == 's'.toString()">
-  			email like concat ('%' , #{keyword} , '%')
-  		</if>
-  		<if test="item == 'c'.toString()">
-  			phone like concat ('%' , #{keyword} , '%')
-  		</if>
-  		</foreach>
-  		</if>
-</sql>
+  			]]>
+				</if>
+				<if test="item == 's'.toString()">
+					email like concat ('%' , #{keyword} , '%')
+				</if>
+				<if test="item == 'c'.toString()">
+					phone like concat ('%' , #{keyword} , '%')
+				</if>
+			</foreach>
+		</if>
+	</sql>
 
-	<select id="getManagerList" resultType="org.judy.manager.domain.Manager">
+	<select id="getManagerList"
+		resultType="org.judy.manager.domain.Manager">
 		<![CDATA[
   		select * from tbl_manager where enabled = 1
-  		]]> 
-  		<include refid="search"/>
+  		]]>
+		<include refid="search" />
   		
   		<![CDATA[
   		order by regdate desc limit #{skip}, #{perSheet}
   		]]>
-  		
+
 	</select>
-	
-		<select id="delManagerList" resultType="org.judy.manager.domain.Manager">
+
+	<select id="delManagerList"
+		resultType="org.judy.manager.domain.Manager">
 		<![CDATA[
   		select * from tbl_manager where enabled = 0
-  		]]> 
-  		<include refid="search"/>
+  		]]>
+		<include refid="search" />
   		
   		<![CDATA[
   		order by regdate desc limit #{skip}, #{perSheet}
   		]]>
-	    </select>
-	    
-	    <select id="appManagerList" resultType="org.judy.manager.domain.Manager">
+	</select>
+
+	<select id="appManagerList"
+		resultType="org.judy.manager.domain.Manager">
 		<![CDATA[
   		select * from tbl_manager where approval = 0
-  		]]> 
-  		<include refid="search"/>
+  		]]>
+		<include refid="search" />
   		
   		<![CDATA[
   		order by regdate desc limit #{skip}, #{perSheet}
   		]]>
-	    </select>
-	
-	<select id="selectOne" resultType="org.judy.manager.domain.Manager">
+	</select>
+
+	<select id="selectOne"
+		resultType="org.judy.manager.domain.Manager">
 		<![CDATA[
   		select * from tbl_manager where mid = #{mid}
   		]]>
 	</select>
+
+	<insert id="insertAuth">
+		insert into tbl_auth (mid, auth) values (#{mid}, 'ROLE_MANAGER');
+	</insert>
 
 	<insert id="registerMan">
 	<![CDATA[
@@ -73,35 +82,35 @@
 		values (#{mid} , #{mpw} , #{email} , #{phone} , #{cdn} , #{health} , #{hygiene} , #{license})
   		]]>
 	</insert>
-	
+
 	<select id="totalMan" resultType="int">
 	<![CDATA[
   		select count(*) from tbl_manager 
   		where enabled = 1
-  		]]>  		
-  		<include refid="search"/>
-  		
+  		]]>
+		<include refid="search" />
+
 	</select>
-	
-	<update id = "enabled">
+
+	<update id="enabled">
 	<![CDATA[
 	update tbl_manager set enabled = if(enabled = 0, 1, 0) where mid = #{mid}
 	]]>
 	</update>
-	
-	<update id = "approval">
+
+	<update id="approval">
 	<![CDATA[
 	update tbl_manager set approval = 1 where mid = #{mid}
 	]]>
 	</update>
-	
+
 	<update id="updateMan">
 		<![CDATA[
   		update tbl_manager set phone= #{phone}, email = #{email} where mid = #{mid}
   		]]>
 	</update>
-	
 
-	
-	
+
+
+
 </mapper>
